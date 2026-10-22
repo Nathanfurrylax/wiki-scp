@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% from "_macros.html" import card, pager with context %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="page-intro reveal"><div class="eyebrow">BASE DE DONNÉES // CONSULTATION</div><h1>{{ title }}</h1><p class="lead">{{ total }} document{{ 's' if total > 1 }} accessible{{ 's' if total > 1 }}.</p></div>
+<form class="searchbar reveal" method="get" action="{{ url_for('archives') }}"><span>⌕</span><input name="q" value="{{ q }}" placeholder="Rechercher un dossier, un rapport…" maxlength="100"><select name="section"><option value="">Toutes les sections</option>{% for slug, s in SECTIONS.items() %}<option value="{{ slug }}" {{ 'selected' if current == slug }}>{{ s.label }}</option>{% endfor %}</select><button class="btn primary">Rechercher</button></form>
+<div class="grid">{% for p in posts %}{{ card(p) }}{% else %}<div class="empty">Aucun document trouvé.</div>{% endfor %}</div>
+{{ pager(endpoint, args, page, pages, total) }}
+{% endblock %}

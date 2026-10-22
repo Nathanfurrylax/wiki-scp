@@ -1,0 +1,30 @@
+# Blueprint Render — variante GRATUITE avec base externe (Supabase).
+# La base PostgreSQL n'est pas créée par Render : colle l'adresse Supabase dans DATABASE_URL.
+services:
+  - type: web
+    name: scp-foundation
+    runtime: python
+    plan: free                 # passer à "starter" (payant) pour éviter la mise en veille et pouvoir ajouter un disque
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 1 --threads 4 --timeout 180 --bind 0.0.0.0:$PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false            # adresse Supabase « Session pooler »
+      - key: SITE_URL
+        sync: false
+      - key: DISCORD_CLIENT_ID
+        sync: false
+      - key: DISCORD_CLIENT_SECRET
+        sync: false
+      - key: DISCORD_REDIRECT_URI
+        sync: false
+      - key: ADMIN_DISCORD_IDS
+        sync: false
+      # Médias durables (recommandé) : Cloudflare R2 / S3 — voir docs/07-Medias.md
+      # - key: S3_BUCKET
+      #   sync: false

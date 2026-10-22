@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block title %}Studio{% endblock %}
+{% block content %}
+<div class="page-intro reveal"><div class="eyebrow"><span class="pulse"></span> SESSION AUTORISÉE · {% if user.avatar %}<img class="avatar" src="https://cdn.discordapp.com/avatars/{{ user.id }}/{{ user.avatar }}.png?size=48" alt="">{% endif %}{{ user.username }}</div><h1>Studio de publication<span class="red">.</span></h1><a class="btn primary" href="{{ url_for('edit_post') }}">＋ Nouveau document</a></div>
+<div class="stats"><div><span>DOCUMENTS</span><b data-count="{{ stats.total }}">0</b></div><div><span>PUBLIÉS</span><b data-count="{{ stats.pub }}">0</b></div><div><span>BROUILLONS</span><b data-count="{{ stats.draft }}">0</b></div><div><span>MÉDIAS</span><b data-count="{{ stats.media }}">0</b></div></div>
+<form class="searchbar" method="get"><span>⌕</span><input name="q" value="{{ q }}" placeholder="Filtrer par titre…"><button class="btn primary">Filtrer</button></form>
+<div class="rows">{% for p in posts %}<div class="row"><div class="row-main"><span class="tag">{{ SECTIONS[p.section].label }} · {{ 'PUBLIÉ' if p.published else 'BROUILLON' }}{% if p.pinned %} · ÉPINGLÉ{% endif %}</span><h3>{{ p.title }}</h3><small>Modifié par {{ p.author or '—' }}</small></div>
+<div class="row-actions"><a class="btn small ghost" href="{{ url_for('edit_post', post_id=p.id) }}">Modifier</a><a class="btn small ghost" href="{{ url_for('article', slug=p.slug) }}">Voir</a>
+<form method="post" action="{{ url_for('toggle_post', post_id=p.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn small ghost">{{ 'Dépublier' if p.published else 'Publier' }}</button></form>
+<form method="post" action="{{ url_for('delete_post', post_id=p.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn small danger" data-confirm="Supprimer définitivement ce document ?">Supprimer</button></form></div></div>
+{% else %}<div class="empty">Aucun document.</div>{% endfor %}</div>
+{% endblock %}

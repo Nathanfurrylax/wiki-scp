@@ -1,0 +1,21 @@
+{% macro card(post, big=False) %}
+<a class="card reveal {{ 'card-big' if big }}" href="{{ url_for('article', slug=post.slug) }}" data-tilt>
+  <div class="card-art">
+    {% if post.cover %}<img src="{{ post.cover }}" alt="" loading="lazy" decoding="async">{% else %}<span class="art-icon">{{ SECTIONS[post.section].icon }}</span>{% endif %}
+    <i>DOC·{{ '%04d'|format(post.id) }}</i>{% if post.pinned %}<em class="pin">ÉPINGLÉ</em>{% endif %}{% if not post.published %}<em class="pin draft">BROUILLON</em>{% endif %}
+  </div>
+  <div class="card-body">
+    <span class="tag">{{ SECTIONS[post.section].label }}</span>
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.excerpt|truncate(big and 220 or 130) }}</p>
+    <small>{{ (post.published_at or post.created_at)|fdate }}</small>
+  </div>
+</a>
+{% endmacro %}
+{% macro pager(endpoint, args, page, pages, total) %}
+{% if pages > 1 %}<nav class="pager" aria-label="Pagination">
+  {% if page > 1 %}<a class="btn small ghost" href="{{ url_for(endpoint, page=page-1, **args) }}">← Précédent</a>{% else %}<span></span>{% endif %}
+  <span class="muted">PAGE {{ page }} / {{ pages }} · {{ total }} DOCUMENTS</span>
+  {% if page < pages %}<a class="btn small ghost" href="{{ url_for(endpoint, page=page+1, **args) }}">Suivant →</a>{% else %}<span></span>{% endif %}
+</nav>{% endif %}
+{% endmacro %}

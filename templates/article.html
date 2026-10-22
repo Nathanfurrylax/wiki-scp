@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% from "_macros.html" import card with context %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block meta %}<meta name="description" content="{{ post.excerpt|truncate(155) }}"><meta property="og:title" content="{{ post.title }}"><meta property="og:description" content="{{ post.excerpt|truncate(200) }}"><meta property="og:type" content="article">{% if post.cover %}<meta property="og:image" content="{{ post.cover }}">{% endif %}<link rel="canonical" href="{{ url_for('article', slug=post.slug, _external=True) }}">{% endblock %}
+{% block body_class %}is-article{% endblock %}
+{% block content %}
+<div class="breadcrumbs"><a href="{{ url_for('home') }}">Accueil</a> / <a href="{{ url_for('section_page', slug=post.section) }}">{{ SECTIONS[post.section].label }}</a></div>
+<article class="article">
+  <header class="article-head reveal">
+    <span class="tag">DOCUMENT CONTRÔLÉ · {{ SECTIONS[post.section].label }}</span>
+    <h1 class="glitch" data-text="{{ post.title }}">{{ post.title }}</h1>
+    <div class="article-meta">⛨ RÉF. {{ '%04d'|format(post.id) }} <span>•</span> {{ (post.published_at or post.created_at)|fdate }} <span>•</span> LECTURE ≈ {{ post.content|reading_time }} MIN{% if post.author %} <span>•</span> PAR {{ post.author|upper }}{% endif %}{% if not post.published %} <span>•</span> <b class="red">BROUILLON — VISIBLE PAR LES ÉDITEURS</b>{% endif %}</div>
+  </header>
+  {% if post.cover %}<figure class="cover reveal"><img src="{{ post.cover }}" alt="" data-zoom></figure>{% endif %}
+  <div class="classification reveal"><b>⚠ DOCUMENT FICTIF</b><p>Ce contenu est une œuvre de fiction. Il ne constitue ni une information réelle ni une instruction de sécurité.</p></div>
+  <div class="layout"><aside class="toc" id="toc" aria-label="Sommaire"></aside>
+  <div class="prose" id="prose">{{ post.content|md }}</div></div>
+  <footer class="article-end">— FIN DU DOCUMENT —
+    {% if post.tags %}<div class="tags">{% for t in post.tags|taglist %}<a href="{{ url_for('tag_page', tag=t) }}">#{{ t }}</a>{% endfor %}</div>{% endif %}
+    <div class="actions"><button class="btn ghost small" data-copy="{{ url_for('article', slug=post.slug, _external=True) }}">⧉ Copier le lien</button>{% if is_admin %}<a class="btn small ghost" href="{{ url_for('edit_post', post_id=post.id) }}">✎ Modifier</a>{% endif %}</div>
+  </footer>
+</article>
+{% if related %}<section class="block"><div class="section-heading"><div><div class="eyebrow">DOSSIERS LIÉS</div><h2>Dans le même département</h2></div></div><div class="grid">{% for p in related %}{{ card(p) }}{% endfor %}</div></section>{% endif %}
+{% endblock %}
