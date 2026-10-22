@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Rédiger un article — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link active" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/08-Rediger.svg" alt="✍️ Rédiger un article" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-08_%2F_14-ff6ad5?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-D%C3%A9butant-5dffb0?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-10_min-5fd0ff?style=flat-square" /></p>
+<p><a href="07-Medias.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="09-Administration.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (5 sections)</summary>
+<ul>
+<li><a href="#-markdown-pris-en-charge">✒️ Markdown pris en charge</a></li>
+<li><a href="#-insérer-des-médias">🎞️ Insérer des médias</a></li>
+<li><a href="#-dans-léditeur">🖥️ Dans l'éditeur</a></li>
+<li><a href="#-résumé-tags-couverture">🏷️ Résumé, tags, couverture</a></li>
+<li><a href="#-limites-connues">⚠️ Limites connues</a></li>
+</ul>
+</details>
+<p>Studio → <strong>Nouveau document</strong>. Titre, département, tags, résumé, couverture, contenu, puis cases <strong>Publier</strong> / <strong>Épingler</strong>.</p>
+<h2 id="-markdown-pris-en-charge">✒️ Markdown pris en charge</h2>
+<table>
+<thead>
+<tr>
+<th>Syntaxe</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>## Titre</code> / <code>### Sous-titre</code></td>
+<td>Titres (alimentent le <strong>sommaire automatique</strong>)</td>
+</tr>
+<tr>
+<td><code>**gras**</code>, <code>*italique*</code></td>
+<td><strong>Gras</strong>, <em>italique</em> (le barré <code>~~</code> n'existe pas : utilise <code>&lt;del&gt;texte&lt;/del&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>&gt; citation</code></td>
+<td>Bloc citation rouge</td>
+</tr>
+<tr>
+<td><code>- élément</code> / <code>1. élément</code></td>
+<td>Listes</td>
+</tr>
+<tr>
+<td><code>`code`</code> et blocs <code></code> ```</td>
+<td>Code</td>
+</tr>
+<tr>
+<td><code>[texte](https://…)</code></td>
+<td>Lien (s'ouvre dans un nouvel onglet)</td>
+</tr>
+<tr>
+<td>Tableaux <code>\| a \| b \|</code></td>
+<td>Tableaux</td>
+</tr>
+<tr>
+<td><code>\|\|texte\|\|</code></td>
+<td><strong>Texte expurgé</strong> : barre noire, révélée au survol ou au clic</td>
+</tr>
+</tbody>
+</table>
+<p>Le HTML saisi à la main est <strong>assaini</strong> : seules les balises de mise en forme courantes sont conservées (scripts, styles, iframes arbitraires supprimés).</p>
+<h2 id="-insérer-des-médias">🎞️ Insérer des médias</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+flowchart LR
+  A[&quot;📝 Markdown + shortcodes&quot;] --&gt; B[&quot;🧩 Extraction des shortcodes&quot;]
+  B --&gt; C[&quot;█ Texte expurgé en span&quot;]
+  C --&gt; D[&quot;📄 Markdown vers HTML&quot;]
+  D --&gt; E[&quot;🧼 bleach : assainissement&quot;]
+  E --&gt; F[&quot;🖼️ Réinsertion des médias&quot;]
+  F --&gt; G([&quot;🌐 Page publiée&quot;])
+  class G ok
+  classDef cloud fill:#0f2130,stroke:#5fd0ff,color:#e6eef5
+  classDef ok fill:#0c241b,stroke:#5dffb0,color:#e6eef5
+  classDef bad fill:#241219,stroke:#ff4d5e,color:#ffb4bb
+</pre>
+<p><strong>Aperçu des dispositions :</strong></p>
+<pre><code class="language-text"> align=left            align=right           align=center / full
+┌──────┬───────────┐   ┌───────────┬──────┐   ┌──────────────────┐
+│ IMG  │ texte qui │   │ texte qui │ IMG  │   │ texte            │
+│      │ habille   │   │ habille   │      │   ├──────────────────┤
+├──────┘ le média  │   │ le média  └──────┤   │       IMG        │
+│ suite du texte   │   │ suite du texte   │   ├──────────────────┤
+└──────────────────┘   └──────────────────┘   │ texte            │
+                                              └──────────────────┘
+</code></pre>
+<p>Un shortcode se place <strong>seul sur sa ligne</strong>, n'importe où : avant, après ou entre des paragraphes.</p>
+<pre><code>[[media: URL | align=left | width=40 | caption=Légende]]
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Valeurs</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>align</code></td>
+<td><code>full</code> (défaut), <code>center</code>, <code>left</code>, <code>right</code></td>
+<td><code>left</code>/<code>right</code> : le texte suivant habille le média ; <code>center</code>/<code>full</code> : seul sur sa ligne</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>10 à 100</td>
+<td>Largeur en % de la colonne</td>
+</tr>
+<tr>
+<td><code>caption</code></td>
+<td>texte</td>
+<td>Légende (sans <code>\|</code> ni <code>]</code>)</td>
+</tr>
+<tr>
+<td><code>loop</code></td>
+<td>drapeau (vidéo)</td>
+<td>Lecture automatique, muette, en boucle (façon GIF)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="autres-blocs">Autres blocs</h3>
+<pre><code>[[media: https://exemple.com/video.mp4 | loop]]
+[[gallery: URL1 | URL2 | URL3]]
+[[youtube: https://youtu.be/dQw4w9WgXcQ]]
+</code></pre>
+<ul>
+<li><code>gallery</code> : grille responsive d'images/vidéos.</li>
+<li><code>youtube</code> : accepte un lien (<code>youtu.be</code>, <code>watch?v=</code>, <code>embed/</code>) ou l'identifiant de 11 caractères ; lecture via <code>youtube-nocookie.com</code>.</li>
+<li>Les adresses acceptées : fichiers de la bibliothèque (<code>/media/…</code> ou adresse du bucket) ou n'importe quelle adresse <strong>https</strong>. Les autres (<code>http</code>, <code>javascript:</code>…) sont ignorées.</li>
+<li>Une vidéo est reconnue à l'extension <code>.mp4</code>, <code>.webm</code>, <code>.mov</code> ; le reste est traité comme image.</li>
+</ul>
+<h3 id="exemple">Exemple</h3>
+<pre><code>## Observation
+
+[[media: /media/a1b2c3.jpg | align=right | width=40 | caption=Sujet à 14h02]]
+
+Le sujet est resté immobile pendant toute la durée de l'observation. Le texte
+continue autour de l'image placée à droite.
+
+[[gallery: /media/x.jpg | /media/y.jpg | /media/z.jpg]]
+
+Les données ont été ||expurgées|| par ordre du directeur.
+</code></pre>
+<h2 id="-dans-léditeur">🖥️ Dans l'éditeur</h2>
+<ul>
+<li><strong>Bibliothèque</strong> à droite : glisse-dépose, clic pour parcourir, ou <strong>colle une image</strong> (Ctrl+V) dans le texte.</li>
+<li>Choisis disposition, largeur, légende, puis <strong>Insérer</strong> : le shortcode est ajouté à la position du curseur.</li>
+<li><strong>Couverture</strong> : définit l'image affichée en tête d'article et sur les cartes.</li>
+<li><strong>Sélection</strong> de plusieurs médias puis <strong>Insérer en galerie</strong>.</li>
+<li><strong>Aperçu</strong> en direct (bouton 👁), compteur de mots, <strong>brouillon local</strong> sauvegardé dans ton navigateur (bouton de restauration si la page est rechargée).</li>
+</ul>
+<h2 id="-résumé-tags-couverture">🏷️ Résumé, tags, couverture</h2>
+<ul>
+<li><strong>Résumé</strong> : 300 caractères max ; généré automatiquement à partir du texte si laissé vide.</li>
+<li><strong>Tags</strong> : séparés par des virgules ; transformés en <code>minuscules-sans-accents</code> (8 max). Chaque tag a sa page <code>/tag/&lt;tag&gt;</code>.</li>
+<li><strong>Couverture</strong> : image (ou adresse https) ; sans couverture, une icône de département s'affiche.</li>
+</ul>
+<h2 id="-limites-connues">⚠️ Limites connues</h2>
+<div class="alert note">
+<p class="alert-title">ℹ️ Note</p>
+<p>Les légendes sont du <strong>texte brut</strong>. L'adresse d'un article est créée à partir du titre <strong>au moment de la création</strong>.</p>
+</div>
+<ul>
+<li>Un shortcode écrit <strong>dans un bloc de code</strong> est quand même interprété. Pour l'afficher tel quel, écris-le avec un espace : <code>[ [media: …] ]</code>.</li>
+<li>Les légendes sont du texte brut.</li>
+<li>Le titre d'article génère l'adresse (<code>/a/&lt;slug&gt;</code>) à la <strong>création</strong> ; modifier le titre ensuite ne change pas l'adresse.</li>
+</ul>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="07-Medias.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="09-Administration.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+<p><sub>◀ <a href="07-Medias.html">🎞️ Médias et stockage</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="09-Administration.html">🛠️ Administration</a> ▶</sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

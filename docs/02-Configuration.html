@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Configuration — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link active" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/02-Configuration.svg" alt="⚙️ Configuration" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-02_%2F_14-ffb347?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-D%C3%A9butant-5dffb0?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-10_min-5fd0ff?style=flat-square" /></p>
+<p><a href="01-Installation-locale.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="03-Discord-OAuth.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (6 sections)</summary>
+<ul>
+<li><a href="#-obligatoires">🔴 Obligatoires</a></li>
+<li><a href="#-production">🏭 Production</a></li>
+<li><a href="#-médias">🎞️ Médias</a></li>
+<li><a href="#-avancé">🧪 Avancé</a></li>
+<li><a href="#-modèle-env-local">🧾 Modèle <code>.env</code> local</a></li>
+<li><a href="#-règles-décriture">📏 Règles d'écriture</a></li>
+</ul>
+</details>
+<p>Le site se configure uniquement par variables d'environnement : fichier <code>.env</code> en local, onglet <strong>Environment</strong> sur Render. <strong>Ne publie jamais <code>.env</code></strong> (il est dans <code>.gitignore</code>).</p>
+<h2 id="-obligatoires">🔴 Obligatoires</h2>
+<div class="alert caution">
+<p class="alert-title">🚨 Danger</p>
+<p><strong>Ne publie jamais le fichier <code>.env</code></strong> ni ces valeurs dans un message, un dépôt ou une capture d'écran.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Rôle</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FLASK_SECRET_KEY</code></td>
+<td>Signe les sessions et jetons CSRF. Longue valeur aléatoire, <strong>stable</strong>. Sur Render, le site refuse de démarrer sans elle.</td>
+<td>voir ci-dessous</td>
+</tr>
+<tr>
+<td><code>DISCORD_CLIENT_ID</code></td>
+<td>Identifiant de l'application Discord</td>
+<td><code>1562064266721361930</code></td>
+</tr>
+<tr>
+<td><code>DISCORD_CLIENT_SECRET</code></td>
+<td>Secret OAuth2 (≈ 32 caractères)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DISCORD_REDIRECT_URI</code></td>
+<td>Adresse de retour, identique à celle du portail Discord</td>
+<td><code>https://mon-site.onrender.com/auth/callback</code></td>
+</tr>
+<tr>
+<td><code>ADMIN_DISCORD_IDS</code></td>
+<td>ID Discord autorisés à publier, séparés par des virgules</td>
+<td><code>123456789012345678,987654321098765432</code></td>
+</tr>
+</tbody>
+</table>
+<p>Générer une clé secrète :</p>
+<pre><code class="language-powershell">python -c &quot;import secrets; print(secrets.token_hex(32))&quot;
+</code></pre>
+<h2 id="-production">🏭 Production</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+flowchart LR
+  subgraph LOCAL[&quot;💻 En local&quot;]
+    ENV[&quot;.env&quot;]
+  end
+  subgraph PROD[&quot;☁️ En production&quot;]
+    RENV[&quot;Render → Environment&quot;]
+  end
+  ENV --&gt; APP[&quot;🐍 app.py&lt;br/&gt;os.getenv&quot;]
+  RENV --&gt; APP
+  APP --&gt; SITE([&quot;🌐 Le site&quot;])
+  class APP,SITE cloud
+  classDef cloud fill:#0f2130,stroke:#5fd0ff,color:#e6eef5
+  classDef ok fill:#0c241b,stroke:#5dffb0,color:#e6eef5
+  classDef bad fill:#241219,stroke:#ff4d5e,color:#ffb4bb
+</pre>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Rôle</th>
+<th>Défaut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DATABASE_URL</code></td>
+<td>Adresse PostgreSQL (Supabase…). <code>postgres://</code> et <code>postgresql://</code> sont acceptés.</td>
+<td>SQLite locale</td>
+</tr>
+<tr>
+<td><code>SITE_URL</code></td>
+<td>Adresse publique (RSS, sitemap, robots.txt), sans <code>/</code> final</td>
+<td>déduite de la requête</td>
+</tr>
+<tr>
+<td><code>SITE_NAME</code></td>
+<td>Nom affiché</td>
+<td><code>SCP Foundation</code></td>
+</tr>
+<tr>
+<td><code>PYTHON_VERSION</code></td>
+<td>Version Python utilisée par Render</td>
+<td>— (ex. <code>3.12.7</code>)</td>
+</tr>
+<tr>
+<td><code>RENDER</code></td>
+<td>Définie <strong>automatiquement</strong> par Render : active cookies sécurisés et HSTS</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-médias">🎞️ Médias</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Rôle</th>
+<th>Défaut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DATA_DIR</code></td>
+<td>Dossier de stockage (base SQLite + <code>uploads/</code>). Pour un disque Render : <code>/var/data</code></td>
+<td>dossier du projet</td>
+</tr>
+<tr>
+<td><code>MAX_IMAGE_MB</code></td>
+<td>Taille max d'une image</td>
+<td><code>12</code></td>
+</tr>
+<tr>
+<td><code>MAX_VIDEO_MB</code></td>
+<td>Taille max d'une vidéo</td>
+<td><code>80</code></td>
+</tr>
+<tr>
+<td><code>S3_BUCKET</code></td>
+<td>Active le stockage S3/R2 si défini</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>S3_ENDPOINT_URL</code></td>
+<td>Endpoint S3 (R2 : <code>https://&lt;ACCOUNT_ID&gt;.r2.cloudflarestorage.com</code>)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>S3_PUBLIC_URL</code></td>
+<td>Adresse publique du bucket (sans <code>/</code> final)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>S3_ACCESS_KEY_ID</code> / <code>S3_SECRET_ACCESS_KEY</code></td>
+<td>Clés d'accès</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>S3_REGION</code></td>
+<td>Région</td>
+<td><code>auto</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="-avancé">🧪 Avancé</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Rôle</th>
+<th>Défaut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RATELIMIT_STORAGE_URI</code></td>
+<td>Compteurs de limitation partagés (ex. <code>redis://…</code>)</td>
+<td>mémoire (par worker)</td>
+</tr>
+<tr>
+<td><code>PORT</code></td>
+<td>Port local (<code>python app.py</code>)</td>
+<td><code>5000</code></td>
+</tr>
+<tr>
+<td><code>FLASK_DEBUG</code></td>
+<td><code>1</code> = mode debug <strong>local uniquement</strong></td>
+<td><code>0</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="-modèle-env-local">🧾 Modèle <code>.env</code> local</h2>
+<pre><code>FLASK_SECRET_KEY=colle-ici-une-valeur-aleatoire
+DISCORD_CLIENT_ID=123456789012345678
+DISCORD_CLIENT_SECRET=secret_sans_guillemets
+DISCORD_REDIRECT_URI=http://127.0.0.1:5000/auth/callback
+ADMIN_DISCORD_IDS=123456789012345678
+</code></pre>
+<h2 id="-règles-décriture">📏 Règles d'écriture</h2>
+<ul>
+<li>Une variable par ligne, <strong>sans guillemets ni espaces</strong> autour du <code>=</code>.</li>
+<li>Pas de <code>#</code> dans une valeur (le reste de la ligne serait ignoré).</li>
+<li>Après toute modification : redémarrer le serveur (en local) ; Render redéploie seul.</li>
+</ul>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="01-Installation-locale.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="03-Discord-OAuth.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+<p><sub>◀ <a href="01-Installation-locale.html">💻 Installation locale</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="03-Discord-OAuth.html">🔐 Connexion Discord</a> ▶</sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

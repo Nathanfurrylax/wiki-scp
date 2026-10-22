@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Connexion Discord — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link active" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/03-Discord-OAuth.svg" alt="🔐 Connexion Discord" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-03_%2F_14-7289ff?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-D%C3%A9butant-5dffb0?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-15_min-5fd0ff?style=flat-square" /></p>
+<p><a href="02-Configuration.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="04-GitHub.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (9 sections)</summary>
+<ul>
+<li><a href="#-créer-lapplication">🆕 Créer l'application</a></li>
+<li><a href="#-récupérer-les-identifiants-menu-oauth2">🔑 Récupérer les identifiants (menu <strong>OAuth2</strong>)</a></li>
+<li><a href="#-déclarer-les-redirections-oauth2--redirects">📍 Déclarer les redirections (OAuth2 → Redirects)</a></li>
+<li><a href="#-obtenir-un-id-utilisateur">🪪 Obtenir un ID utilisateur</a></li>
+<li><a href="#-renseigner-le-site">📝 Renseigner le site</a></li>
+<li><a href="#-déroulement-de-la-connexion">🔄 Déroulement de la connexion</a></li>
+<li><a href="#-ajouter--retirer-un-éditeur">👥 Ajouter / retirer un éditeur</a></li>
+<li><a href="#-erreurs-courantes">🧯 Erreurs courantes</a></li>
+<li><a href="#-sécurité-du-secret">🛡️ Sécurité du secret</a></li>
+</ul>
+</details>
+<p>Le site utilise <strong>OAuth2 uniquement pour identifier</strong> l'utilisateur (scope <code>identify</code>). <strong>Aucun bot n'est nécessaire.</strong> Seuls les ID listés dans <code>ADMIN_DISCORD_IDS</code> accèdent au studio ; la liste est revérifiée à chaque requête d'administration.</p>
+<h2 id="-créer-lapplication">🆕 Créer l'application</h2>
+<ol>
+<li>Ouvre le <a href="https://discord.com/developers/applications" target="_blank" rel="noopener noreferrer">Discord Developer Portal</a> → <strong>New Application</strong>.</li>
+<li>Le nom choisi s'affiche sur l'écran d'autorisation vu par les éditeurs.</li>
+</ol>
+<h2 id="-récupérer-les-identifiants-menu-oauth2">🔑 Récupérer les identifiants (menu <strong>OAuth2</strong>)</h2>
+<div class="alert warning">
+<p class="alert-title">⚠️ Attention</p>
+<p>Le <strong>Client Secret</strong> n'est affiché qu'<strong>une seule fois</strong>. Chaque clic sur <em>Reset Secret</em> invalide l'ancien : recopie-le tout de suite dans <code>DISCORD_CLIENT_SECRET</code>.</p>
+</div>
+<ul>
+<li><strong>Client ID</strong> : à copier.</li>
+<li><strong>Client Secret</strong> : bouton <strong>Reset Secret</strong>, puis copie <strong>immédiatement</strong> (affiché une seule fois). Chaque reset invalide l'ancien.</li>
+</ul>
+<h2 id="-déclarer-les-redirections-oauth2--redirects">📍 Déclarer les redirections (OAuth2 → Redirects)</h2>
+<p>Ajoute <strong>exactement</strong> (caractère pour caractère) :</p>
+<table>
+<thead>
+<tr>
+<th>Contexte</th>
+<th>Redirect URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local</td>
+<td><code>http://127.0.0.1:5000/auth/callback</code></td>
+</tr>
+<tr>
+<td>Production</td>
+<td><code>https://TON-SERVICE.onrender.com/auth/callback</code> (ou ton domaine)</td>
+</tr>
+</tbody>
+</table>
+<p>Puis <strong>Save Changes</strong>. Les deux peuvent coexister. <code>localhost</code> ≠ <code>127.0.0.1</code>, <code>http</code> ≠ <code>https</code>, et un <code>/</code> final change l'adresse.</p>
+<h2 id="-obtenir-un-id-utilisateur">🪪 Obtenir un ID utilisateur</h2>
+<p>Discord → Paramètres → Avancés → <strong>Mode développeur</strong> → clic droit sur un profil → <strong>Copier l'identifiant utilisateur</strong> (17 à 19 chiffres).</p>
+<h2 id="-renseigner-le-site">📝 Renseigner le site</h2>
+<pre><code>DISCORD_CLIENT_ID=...
+DISCORD_CLIENT_SECRET=...
+DISCORD_REDIRECT_URI=&lt;identique à celle du portail&gt;
+ADMIN_DISCORD_IDS=ID1,ID2,ID3
+</code></pre>
+<h2 id="-déroulement-de-la-connexion">🔄 Déroulement de la connexion</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+sequenceDiagram
+  autonumber
+  actor U as 👤 Éditeur
+  participant S as 🌐 Site
+  participant D as 🔐 Discord
+  U-&gt;&gt;S: Clic sur Continuer avec Discord
+  S-&gt;&gt;S: Génère un state et le garde en session
+  S--&gt;&gt;U: Redirection vers Discord
+  U-&gt;&gt;D: Autorise l'application
+  D--&gt;&gt;U: Retour sur /auth/callback avec code et state
+  U-&gt;&gt;S: Envoie le code et le state
+  S-&gt;&gt;S: Vérifie le state
+  S-&gt;&gt;D: Échange le code contre un jeton
+  D--&gt;&gt;S: Jeton d'accès
+  S-&gt;&gt;D: Demande le profil /users/@me
+  D--&gt;&gt;S: Identifiant, nom, avatar
+  alt ID présent dans ADMIN_DISCORD_IDS
+    S--&gt;&gt;U: Session de 12 h puis /admin ✅
+  else ID absent de la liste
+    S--&gt;&gt;U: Page Accès non autorisé ⛔
+  end
+</pre>
+<ol>
+<li><code>/login</code> affiche la page d'accès ; le bouton mène à <code>/login?go=1</code>.</li>
+<li>Le site génère un <code>state</code> anti-falsification, stocké en session, et redirige vers Discord.</li>
+<li>Discord renvoie sur <code>/auth/callback?code=…&amp;state=…</code>.</li>
+<li>Le serveur vérifie le <code>state</code>, échange le <code>code</code> contre un jeton, lit le profil (<code>/users/@me</code>).</li>
+<li>Si l'ID est dans la liste : nouvelle session (12 h) → <code>/admin</code>. Sinon : page « Accès non autorisé ».</li>
+</ol>
+<h2 id="-ajouter--retirer-un-éditeur">👥 Ajouter / retirer un éditeur</h2>
+<p>Modifie <code>ADMIN_DISCORD_IDS</code> (Render → Environment) puis enregistre : le site redémarre. Un ID retiré perd l'accès <strong>immédiatement</strong>, même s'il était connecté.</p>
+<h2 id="-erreurs-courantes">🧯 Erreurs courantes</h2>
+<table>
+<thead>
+<tr>
+<th>Message / symptôme</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Invalid OAuth2 redirect_uri</code> (page Discord)</td>
+<td>Redirect du portail ≠ <code>DISCORD_REDIRECT_URI</code></td>
+<td>Les rendre identiques au caractère près</td>
+</tr>
+<tr>
+<td>Logs : <code>401 … oauth2/token</code> / <code>invalid_client</code></td>
+<td>Client ID ou Secret faux ou <strong>vide</strong></td>
+<td>Reset Secret, recopier, vérifier le nom <code>DISCORD_CLIENT_SECRET</code></td>
+</tr>
+<tr>
+<td><code>400 État OAuth invalide</code></td>
+<td>Cookie de session perdu (mélange <code>localhost</code>/<code>127.0.0.1</code>, onglet périmé)</td>
+<td>Ouvrir le site sur l'adresse exacte du redirect, recommencer depuis « Accès éditeur »</td>
+</tr>
+<tr>
+<td>Page « Accès non autorisé »</td>
+<td>Connexion OK mais ID absent de la liste</td>
+<td>Corriger <code>ADMIN_DISCORD_IDS</code> (virgules, sans espaces ni guillemets)</td>
+</tr>
+<tr>
+<td>« Connexion Discord non configurée »</td>
+<td><code>DISCORD_CLIENT_ID</code> vide</td>
+<td>Renseigner la variable, redémarrer</td>
+</tr>
+<tr>
+<td>Connexion OK mais retour déconnecté en production</td>
+<td><code>FLASK_SECRET_KEY</code> instable ou cookies bloqués</td>
+<td>Fixer une clé stable ; utiliser HTTPS</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-sécurité-du-secret">🛡️ Sécurité du secret</h2>
+<p>Ne colle jamais le Client Secret dans un message, un dépôt ou une capture. S'il fuite : <strong>Reset Secret</strong> immédiatement et mets à jour la variable.</p>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="02-Configuration.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="04-GitHub.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+<p><sub>◀ <a href="02-Configuration.html">⚙️ Configuration</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="04-GitHub.html">🐙 GitHub</a> ▶</sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

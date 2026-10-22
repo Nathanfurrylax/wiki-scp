@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Architecture — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link active" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/11-Architecture.svg" alt="🧬 Architecture" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-11_%2F_14-5fd0ff?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-Avanc%C3%A9-ff4d5e?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-15_min-5fd0ff?style=flat-square" /></p>
+<p><a href="10-Securite.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="12-Personnalisation.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (9 sections)</summary>
+<ul>
+<li><a href="#-fichiers">🗂️ Fichiers</a></li>
+<li><a href="#-technologies">🧱 Technologies</a></li>
+<li><a href="#-routes-publiques">🛣️ Routes publiques</a></li>
+<li><a href="#-routes-dadministration-éditeurs">🛣️ Routes d'administration (éditeurs)</a></li>
+<li><a href="#-pipeline-de-rendu-dun-article">⚙️ Pipeline de rendu d'un article</a></li>
+<li><a href="#-connexion">🔐 Connexion</a></li>
+<li><a href="#-stockage">📦 Stockage</a></li>
+<li><a href="#-base-de-données">🍪 Base de données</a></li>
+<li><a href="#-front-end">🎭 Front-end</a></li>
+</ul>
+</details>
+<h2 id="-fichiers">🗂️ Fichiers</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+flowchart TB
+  subgraph FRONT[&quot;🎭 Navigateur&quot;]
+    T[&quot;Templates Jinja + CSS&quot;]
+    J[&quot;main.js et editor.js&quot;]
+  end
+  subgraph BACK[&quot;🐍 Flask : app.py&quot;]
+    RT[&quot;Routes publiques&quot;]
+    AD[&quot;Routes admin&quot;]
+    AU[&quot;Auth Discord&quot;]
+    CT[&quot;content.py&lt;br/&gt;rendu sécurisé&quot;]
+  end
+  subgraph DATA[&quot;💾 Données&quot;]
+    DB[(&quot;PostgreSQL ou SQLite&quot;)]
+    ST[[&quot;Stockage des médias&quot;]]
+  end
+  T --&gt; RT
+  J --&gt; AD
+  RT --&gt; CT
+  AD --&gt; CT
+  RT --&gt; DB
+  AD --&gt; DB
+  AD --&gt; ST
+  AU --&gt; AD
+  class DB,ST ok
+  classDef cloud fill:#0f2130,stroke:#5fd0ff,color:#e6eef5
+  classDef ok fill:#0c241b,stroke:#5dffb0,color:#e6eef5
+  classDef bad fill:#241219,stroke:#ff4d5e,color:#ffb4bb
+</pre>
+<pre><code>scp_public/
+├─ app.py            Flask : configuration, base, stockage, auth Discord, routes, erreurs
+├─ content.py        Markdown + shortcodes médias → HTML assaini ; slug ; tags ; résumé
+├─ requirements.txt  Dépendances Python
+├─ render.yaml       Déploiement Render (variante gratuite)
+├─ .env.example      Modèle de configuration
+├─ templates/        base, home, archives, article, admin, editor, login, forbidden, error, _macros
+├─ static/css/       style.css (thème, animations, éditeur)
+├─ static/js/        main.js (animations, lecteur), editor.js (éditeur de médias)
+├─ uploads/          médias en mode disque local
+└─ docs/             wiki
+</code></pre>
+<h2 id="-technologies">🧱 Technologies</h2>
+<p>Flask 3 · SQLAlchemy 2 (Core) · psycopg 3 / SQLite · Flask-Limiter · Markdown + bleach · requests (Discord) · Gunicorn (production) · boto3 (optionnel, S3/R2).</p>
+<h2 id="-routes-publiques">🛣️ Routes publiques</h2>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/</code></td>
+<td>Accueil (article épinglé/récent, départements, compteurs)</td>
+</tr>
+<tr>
+<td><code>/archives?q=&amp;section=&amp;page=</code></td>
+<td>Archives paginées, recherche, filtre</td>
+</tr>
+<tr>
+<td><code>/section/&lt;slug&gt;</code></td>
+<td>Un département</td>
+</tr>
+<tr>
+<td><code>/tag/&lt;tag&gt;</code></td>
+<td>Un tag</td>
+</tr>
+<tr>
+<td><code>/a/&lt;slug&gt;</code></td>
+<td>Un article (brouillons visibles des éditeurs)</td>
+</tr>
+<tr>
+<td><code>/feed.xml</code>, <code>/sitemap.xml</code>, <code>/robots.txt</code></td>
+<td>RSS, plan du site, robots</td>
+</tr>
+<tr>
+<td><code>/healthz</code></td>
+<td>Contrôle de santé (<code>ok</code>)</td>
+</tr>
+<tr>
+<td><code>/media/&lt;fichier&gt;</code></td>
+<td>Médias en mode disque local (cache long, requêtes partielles)</td>
+</tr>
+<tr>
+<td><code>/login</code>, <code>/auth/callback</code>, <code>/logout</code></td>
+<td>Connexion Discord</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-routes-dadministration-éditeurs">🛣️ Routes d'administration (éditeurs)</h2>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Méthode</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/admin</code></td>
+<td>GET</td>
+<td>Tableau de bord</td>
+</tr>
+<tr>
+<td><code>/admin/new</code>, <code>/admin/edit/&lt;id&gt;</code></td>
+<td>GET, POST</td>
+<td>Éditeur</td>
+</tr>
+<tr>
+<td><code>/admin/toggle/&lt;id&gt;</code></td>
+<td>POST</td>
+<td>Publier / dépublier</td>
+</tr>
+<tr>
+<td><code>/admin/delete/&lt;id&gt;</code></td>
+<td>POST</td>
+<td>Supprimer un document</td>
+</tr>
+<tr>
+<td><code>/admin/preview</code></td>
+<td>POST (JSON)</td>
+<td>Aperçu Markdown</td>
+</tr>
+<tr>
+<td><code>/admin/media</code></td>
+<td>GET (JSON)</td>
+<td>Liste des médias</td>
+</tr>
+<tr>
+<td><code>/admin/upload</code></td>
+<td>POST</td>
+<td>Envoi de médias</td>
+</tr>
+<tr>
+<td><code>/admin/media/&lt;id&gt;/delete</code></td>
+<td>POST</td>
+<td>Supprimer un média</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-pipeline-de-rendu-dun-article">⚙️ Pipeline de rendu d'un article</h2>
+<ol>
+<li>Les lignes <code>[[media|gallery|youtube: …]]</code> sont extraites et remplacées par des jetons ; chaque shortcode est converti en HTML <strong>construit par le serveur</strong> (adresses validées et échappées).</li>
+<li><code>||texte||</code> devient un <code>&lt;span class="redacted"&gt;</code>.</li>
+<li>Markdown → HTML ; <strong>bleach</strong> supprime tout ce qui n'est pas autorisé.</li>
+<li>Les jetons sont remplacés par le HTML des médias.</li>
+</ol>
+<h2 id="-connexion">🔐 Connexion</h2>
+<pre><code>/login?go=1 → Discord /oauth2/authorize (state) → /auth/callback
+→ POST /oauth2/token → GET /users/@me → ID ∈ ADMIN_DISCORD_IDS ? session : 403
+</code></pre>
+<h2 id="-stockage">📦 Stockage</h2>
+<p>Interface unique <code>save</code> / <code>delete</code> avec deux implémentations : <code>LocalStorage</code> (fichiers dans <code>DATA_DIR/uploads</code>) et <code>S3Storage</code> (R2/S3). Le choix dépend de <code>S3_BUCKET</code>.</p>
+<h2 id="-base-de-données">🍪 Base de données</h2>
+<p>Tables <code>posts</code> et <code>media</code> créées au démarrage (<code>meta.create_all</code>). Aucun outil de migration : voir <a href="14-Maintenance.html">Maintenance</a> pour faire évoluer le schéma.</p>
+<h2 id="-front-end">🎭 Front-end</h2>
+<ul>
+<li><code>style.css</code> : variables de thème (<code>:root</code>), animations (grain, balayage, glitch, ticker…), mise en page des médias (flottants), éditeur, responsive, <code>prefers-reduced-motion</code>.</li>
+<li><code>main.js</code> : menu, apparition au scroll, halo de souris, inclinaison des cartes, compteurs, séquence de démarrage, neige TV, horloge, barre de lecture, sommaire, zoom d'image, copie de lien.</li>
+<li><code>editor.js</code> : barre d'outils, bibliothèque de médias, envoi (glisser-déposer, collage), aperçu, brouillon local.</li>
+</ul>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="10-Securite.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="12-Personnalisation.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+<p><sub>◀ <a href="10-Securite.html">🛡️ Sécurité</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="12-Personnalisation.html">🎨 Personnalisation</a> ▶</sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

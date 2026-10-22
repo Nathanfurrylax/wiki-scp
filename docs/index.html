@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Wiki SCP Foundation — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link active" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/home.svg" alt="Wiki SCP Foundation" width="100%"></p>
+<p><img alt="Python" src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&amp;logo=python&amp;logoColor=white" /> <img alt="Flask" src="https://img.shields.io/badge/Flask-3-000000?style=flat-square&amp;logo=flask&amp;logoColor=white" /> <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-Supabase-3ECF8E?style=flat-square&amp;logo=postgresql&amp;logoColor=white" /> <img alt="Render" src="https://img.shields.io/badge/H%C3%A9bergement-Render-46E3B7?style=flat-square&amp;logo=render&amp;logoColor=white" /> <img alt="Discord" src="https://img.shields.io/badge/Connexion-Discord_OAuth2-5865F2?style=flat-square&amp;logo=discord&amp;logoColor=white" /> <img alt="Pages" src="https://img.shields.io/badge/Wiki-14_pages-ff4d5e?style=flat-square" /></p>
+<p><br></p>
+<p><img src="assets/radar.svg" alt="" width="64"> &nbsp; <img src="assets/pulse-green.svg" alt="" width="16"> <b>Site en ligne</b> &nbsp;·&nbsp; <img src="assets/pulse-red.svg" alt="" width="16"> <b>14 pages de documentation</b></p>
+<p><a href="01-Installation-locale.html"><img src="assets/nav-next.svg" alt="Commencer" height="44"></a></p>
+</div>
+<div class="alert tip">
+<p class="alert-title">💡 Astuce</p>
+<p><strong>Première fois ?</strong> Suis le parcours dans l'ordre : <em>Démarrer</em> → <em>Mettre en ligne</em> → <em>Publier</em>. Un problème ? Va directement au <a href="13-Depannage.html">🩺 Dépannage</a>.</p>
+</div>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+</div>
+<h2 id="-sommaire">🗺️ Sommaire</h2>
+<table>
+<tr><td colspan="3"><h3>🧭 Démarrer</h3></td></tr>
+<tr>
+<td width="33%" valign="top">
+
+<a href="01-Installation-locale.html"><b>💻 01 · Installation locale</b></a><br><sub>Installer Python, lancer le site sur ton PC.</sub><br><sub>⏱ 10 min · 🎚 Débutant</sub>
+
+</td>
+<td width="33%" valign="top">
+
+<a href="02-Configuration.html"><b>⚙️ 02 · Configuration</b></a><br><sub>Toutes les variables, leur rôle et leurs valeurs.</sub><br><sub>⏱ 10 min · 🎚 Débutant</sub>
+
+</td>
+<td width="33%" valign="top">
+
+<a href="03-Discord-OAuth.html"><b>🔐 03 · Connexion Discord</b></a><br><sub>Créer l'application, le secret, les redirections.</sub><br><sub>⏱ 15 min · 🎚 Débutant</sub>
+
+</td>
+</tr>
+<tr><td colspan="3"><h3>☁️ Mettre en ligne</h3></td></tr>
+<tr>
+<td width="33%" valign="top">
+
+<a href="04-GitHub.html"><b>🐙 04 · GitHub</b></a><br><sub>Mettre le code en ligne et le mettre à jour.</sub><br><sub>⏱ 10 min · 🎚 Débutant</sub>
+
+</td>
+<td width="33%" valign="top">
+
+<a href="05-Render.html"><b>🚀 05 · Déploiement Render</b></a><br><sub>Héberger le site, domaine, logs, limites.</sub><br><sub>⏱ 20 min · 🎚 Intermédiaire</sub>
+
+</td>
+<td width="33%" valign="top">
+
+<a href="06-Base-de-donnees.html"><b>🗄️ 06 · Base de données</b></a><br><sub>Supabase, Session pooler, schéma, sauvegardes.</sub><br><sub>⏱ 15 min · 🎚 Intermédiaire</sub>
+
+</td>
+</tr>
+<tr>
+<td width="33%" valign="top">
+
+<a href="07-Medias.html"><b>🎞️ 07 · Médias et stockage</b></a><br><sub>Images et vidéos durables avec R2 / S3.</sub><br><sub>⏱ 20 min · 🎚 Intermédiaire</sub>
+
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr><td colspan="3"><h3>✍️ Publier & gérer</h3></td></tr>
+<tr>
+<td width="33%" valign="top">
+
+<a href="08-Rediger.html"><b>✍️ 08 · Rédiger un article</b></a><br><sub>Markdown, médias placés où tu veux, aperçu.</sub><br><sub>⏱ 10 min · 🎚 Débutant</sub>
+
+</td>
+<td width="33%" valign="top">
+
+<a href="09-Administration.html"><b>🛠️ 09 · Administration</b></a><br><sub>Studio, brouillons, publication, suppression.</sub><br><sub>⏱ 5 min · 🎚 Débutant</sub>
+
+</td>
+<td width="33%" valign="top">
+
+<a href="12-Personnalisation.html"><b>🎨 12 · Personnalisation</b></a><br><sub>Adapter le nom, les départements, le thème.</sub><br><sub>⏱ 15 min · 🎚 Intermédiaire</sub>
+
+</td>
+</tr>
+<tr><td colspan="3"><h3>🛡️ Fiabilité & évolution</h3></td></tr>
+<tr>
+<td width="33%" valign="top">
+
+<a href="10-Securite.html"><b>🛡️ 10 · Sécurité</b></a><br><sub>Ce qui est protégé et ce qu'il te reste à faire.</sub><br><sub>⏱ 10 min · 🎚 Tous niveaux</sub>
+
+</td>
+<td width="33%" valign="top">
+
+<a href="11-Architecture.html"><b>🧬 11 · Architecture</b></a><br><sub>Comment le code est organisé.</sub><br><sub>⏱ 15 min · 🎚 Avancé</sub>
+
+</td>
+<td width="33%" valign="top">
+
+<a href="13-Depannage.html"><b>🩺 13 · Dépannage / FAQ</b></a><br><sub>Un symptôme, une cause, une solution.</sub><br><sub>⏱ au besoin · 🎚 Tous niveaux</sub>
+
+</td>
+</tr>
+<tr>
+<td width="33%" valign="top">
+
+<a href="14-Maintenance.html"><b>🔧 14 · Maintenance</b></a><br><sub>Faire durer et grandir le site.</sub><br><sub>⏱ 15 min · 🎚 Intermédiaire</sub>
+
+</td>
+<td></td>
+<td></td>
+</tr>
+</table>
+
+<h2 id="-le-parcours-en-un-coup-dœil">🧭 Le parcours en un coup d'œil</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+flowchart LR
+  subgraph L[&quot;🧭 1 · En local&quot;]
+    A[&quot;💻 Installer&quot;] --&gt; B[&quot;⚙️ Configurer&quot;] --&gt; C[&quot;🔐 Discord&quot;]
+  end
+  subgraph W[&quot;☁️ 2 · En ligne&quot;]
+    D[&quot;🐙 GitHub&quot;] --&gt; E[&quot;🗄️ Base&quot;] --&gt; F[&quot;🚀 Render&quot;] --&gt; G[&quot;🎞️ Médias&quot;]
+  end
+  subgraph P[&quot;✍️ 3 · Au quotidien&quot;]
+    H[&quot;✍️ Rédiger&quot;] --&gt; I[&quot;🛠️ Administrer&quot;] --&gt; J[&quot;🔧 Maintenir&quot;]
+  end
+  C --&gt; D
+  G --&gt; H
+</pre>
+<h2 id="-vue-densemble">🏗️ Vue d'ensemble</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+flowchart LR
+  V([&quot;👤 Visiteur&quot;]) --&gt; R[&quot;☁️ Render&lt;br/&gt;Flask + Gunicorn&quot;]
+  E([&quot;✍️ Éditeur&quot;]) --&gt; D{{&quot;🔐 Discord OAuth2&quot;}}
+  D --&gt;|&quot;ID autorisé&quot;| R
+  R --&gt; S[(&quot;🗄️ Supabase&lt;br/&gt;PostgreSQL&quot;)]
+  R --&gt; M[[&quot;🎞️ Médias&lt;br/&gt;R2, S3 ou disque&quot;]]
+  class R,S,M cloud
+  classDef cloud fill:#0f2130,stroke:#5fd0ff,color:#e6eef5
+  classDef ok fill:#0c241b,stroke:#5dffb0,color:#e6eef5
+  classDef bad fill:#241219,stroke:#ff4d5e,color:#ffb4bb
+</pre>
+<h2 id="-coûts-option-gratuite">💶 Coûts (option gratuite)</h2>
+<table>
+<thead>
+<tr>
+<th>Brique</th>
+<th>Option gratuite</th>
+<th>Limites habituelles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🐙 Code</td>
+<td>GitHub (dépôt privé ou public)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>☁️ Hébergement</td>
+<td>Render « Free »</td>
+<td>veille après inactivité, démarrage lent, pas de disque</td>
+</tr>
+<tr>
+<td>🗄️ Base</td>
+<td>Supabase « Free »</td>
+<td>projet pouvant être mis en pause, stockage limité</td>
+</tr>
+<tr>
+<td>🎞️ Médias</td>
+<td>Cloudflare R2 (offre gratuite)</td>
+<td>quota gratuit limité</td>
+</tr>
+<tr>
+<td>🔐 Identification</td>
+<td>Discord OAuth2</td>
+<td>gratuit</td>
+</tr>
+</tbody>
+</table>
+<div class="alert note">
+<p class="alert-title">ℹ️ Note</p>
+<p>Tarifs et limites <strong>évoluent</strong> : vérifie toujours les pages officielles de chaque service.</p>
+</div>
+<h2 id="-aide-mémoire">🧰 Aide-mémoire</h2>
+<details open="open">
+<summary><b>Commandes essentielles</b></summary>
+<pre><code class="language-powershell"># Lancer en local
+.\.venv\Scripts\Activate.ps1 ; python app.py
+
+# Envoyer une mise à jour (Render redéploie seul)
+git add . ; git commit -m &quot;message&quot; ; git push
+
+# Clé secrète aléatoire
+python -c &quot;import secrets; print(secrets.token_hex(32))&quot;
+
+# Sauvegarde de la base
+pg_dump &quot;&lt;adresse Supabase&gt;&quot; -f sauvegarde.sql
+</code></pre>
+</details>
+<h2 id="-questions-rapides">❓ Questions rapides</h2>
+<table>
+<thead>
+<tr>
+<th>❓ Question</th>
+<th>👉 Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Faut-il un bot Discord ?</td>
+<td>Non, juste une application OAuth2 → <a href="03-Discord-OAuth.html">page 3</a></td>
+</tr>
+<tr>
+<td>Plusieurs éditeurs ?</td>
+<td>Oui, liste d'ID séparés par des virgules → <a href="09-Administration.html">page 9</a></td>
+</tr>
+<tr>
+<td>Mes images disparaissent</td>
+<td>Stockage temporaire → <a href="07-Medias.html">page 7</a></td>
+</tr>
+<tr>
+<td>Erreur à la connexion</td>
+<td><a href="13-Depannage.html">Arbre de diagnostic</a></td>
+</tr>
+<tr>
+<td>Ajouter un département</td>
+<td><a href="12-Personnalisation.html">Personnalisation</a></td>
+</tr>
+</tbody>
+</table>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="01-Installation-locale.html"><img src="assets/nav-next.svg" alt="Commencer" height="44"></a></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable</sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Personnalisation — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link active" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/12-Personnalisation.svg" alt="🎨 Personnalisation" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-12_%2F_14-c792ff?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-Interm%C3%A9diaire-ffb347?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-15_min-5fd0ff?style=flat-square" /></p>
+<p><a href="11-Architecture.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="13-Depannage.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (10 sections)</summary>
+<ul>
+<li><a href="#-nom-du-site">🏷️ Nom du site</a></li>
+<li><a href="#-départements">🏛️ Départements</a></li>
+<li><a href="#-couleurs-et-polices">🎨 Couleurs et polices</a></li>
+<li><a href="#-textes-de-laccueil">📝 Textes de l'accueil</a></li>
+<li><a href="#-animations">✨ Animations</a></li>
+<li><a href="#-pagination-et-limites">⚠️ Pagination et limites</a></li>
+<li><a href="#-logo--favicon">🖼️ Logo / favicon</a></li>
+<li><a href="#-langue">🌍 Langue</a></li>
+<li><a href="#-ajouter-une-page-exemple--à-propos-">📄 Ajouter une page (exemple « À propos »)</a></li>
+<li><a href="#-content-security-policy">🧱 Content-Security-Policy</a></li>
+</ul>
+</details>
+<h2 id="-nom-du-site">🏷️ Nom du site</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+mindmap
+  root((🎨 Personnalisation))
+    🏷️ Identité
+      SITE_NAME
+      Logo et favicon
+    🏛️ Départements
+      SECTIONS dans app.py
+    🎨 Thème
+      Variables CSS
+      Polices
+    ✨ Animations
+      Désactiver
+      Réduire
+    📝 Textes
+      home.html
+      base.html
+</pre>
+<p>Variable <code>SITE_NAME</code> (titre, en-tête, flux RSS). Les textes fixes (slogan, pied de page) sont dans <code>templates/base.html</code>.</p>
+<h2 id="-départements">🏛️ Départements</h2>
+<p>Dans <code>app.py</code>, dictionnaire <code>SECTIONS</code> :</p>
+<pre><code class="language-python">SECTIONS = {
+    &quot;dossiers-scp&quot;: {&quot;label&quot;: &quot;Dossiers SCP&quot;, &quot;icon&quot;: &quot;◉&quot;, &quot;desc&quot;: &quot;Entités, objets et phénomènes anormaux.&quot;},
+    ...
+}
+</code></pre>
+<ul>
+<li><strong>Ajouter</strong> : nouvelle entrée (clé = slug en minuscules sans espaces). Aucune autre modification : menu, accueil, filtres et éditeur s'adaptent. La grille de l'accueil est prévue pour 5 colonnes (voir <code>.dept-grid</code> dans le CSS).</li>
+<li><strong>Renommer le libellé</strong> : change <code>label</code>.</li>
+<li><strong>Changer une clé existante</strong> : mets à jour la base : <code>UPDATE posts SET section='nouvelle-cle' WHERE section='ancienne-cle';</code> (éditeur SQL de Supabase).</li>
+<li><strong>Supprimer</strong> : ne supprime pas une clé utilisée par des articles (ils feraient planter l'affichage) ; déplace-les d'abord.</li>
+</ul>
+<h2 id="-couleurs-et-polices">🎨 Couleurs et polices</h2>
+<p><code>static/css/style.css</code>, bloc <code>:root</code> :</p>
+<pre><code class="language-css">--bg:#05080d; --cyan:#5fd0ff; --red:#ff4d5e; --green:#5dffb0; --amber:#ffb347;
+</code></pre>
+<p>Polices : liens Google Fonts dans <code>templates/base.html</code> + variables <code>--sans</code>, <code>--mono</code>, <code>--disp</code>.</p>
+<h2 id="-textes-de-laccueil">📝 Textes de l'accueil</h2>
+<p><code>templates/home.html</code> : titre du héros, accroche, lignes de la séquence de démarrage (<code>data-line</code>), bandeau défilant (<code>.ticker</code>), citation, alerte de sécurité.</p>
+<h2 id="-animations">✨ Animations</h2>
+<ul>
+<li><strong>Tout désactiver</strong> : supprime les <code>&lt;div class="noise"&gt;</code>, <code>&lt;div class="scan"&gt;</code> de <code>base.html</code> et l'élément <code>&lt;canvas id="static"&gt;</code> de <code>home.html</code>.</li>
+<li><strong>Réduire</strong> : baisse <code>opacity</code> de <code>.noise</code>, la vitesse de <code>.ticker div</code> (durée de <code>marquee</code>), ou retire <code>data-tilt</code> des cartes.</li>
+<li>Les visiteurs ayant réglé leur système sur « réduire les animations » n'en voient aucune.</li>
+</ul>
+<h2 id="-pagination-et-limites">⚠️ Pagination et limites</h2>
+<ul>
+<li><code>PER_PAGE</code> (12) dans <code>app.py</code>.</li>
+<li>Limites de requêtes : <code>default_limits</code> et décorateurs <code>@limiter.limit(...)</code>.</li>
+<li>Tailles de médias : <code>MAX_IMAGE_MB</code>, <code>MAX_VIDEO_MB</code>.</li>
+</ul>
+<h2 id="-logo--favicon">🖼️ Logo / favicon</h2>
+<p>Le logo est un caractère (⛨) dans <code>.brand-mark</code>. Pour une image, remplace ce <code>&lt;span&gt;</code> par <code>&lt;img src="{{ url_for('static', filename='logo.png') }}" ...&gt;</code> et ajuste le CSS. Le favicon est défini dans <code>base.html</code>.</p>
+<h2 id="-langue">🌍 Langue</h2>
+<p>Les textes sont en français dans les templates et dans <code>app.py</code> (messages d'erreur, <code>flash</code>). Les dates utilisent le format <code>jj/mm/aaaa</code> (filtre <code>fdate</code>).</p>
+<h2 id="-ajouter-une-page-exemple--à-propos-">📄 Ajouter une page (exemple « À propos »)</h2>
+<pre><code class="language-python">@app.route(&quot;/a-propos&quot;)
+def about():
+    return render_template(&quot;about.html&quot;)
+</code></pre>
+<p>Puis crée <code>templates/about.html</code> (<code>{% extends "base.html" %}</code>) et ajoute un lien dans la navigation de <code>base.html</code>. Ajoute la page au sitemap si besoin.</p>
+<h2 id="-content-security-policy">🧱 Content-Security-Policy</h2>
+<p>Si tu ajoutes un service externe (statistiques, polices, widgets), autorise son domaine dans l'en-tête <code>Content-Security-Policy</code> de la fonction <code>headers()</code> de <code>app.py</code>. <strong>Pas de script en ligne</strong> : place le JavaScript dans <code>static/js/</code>.</p>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="11-Architecture.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="13-Depannage.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+<p><sub>◀ <a href="11-Architecture.html">🧬 Architecture</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="13-Depannage.html">🩺 Dépannage / FAQ</a> ▶</sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Base de données — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link active" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/06-Base-de-donnees.svg" alt="🗄️ Base de données" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-06_%2F_14-3ecf8e?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-Interm%C3%A9diaire-ffb347?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-15_min-5fd0ff?style=flat-square" /></p>
+<p><a href="05-Render.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="07-Medias.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (8 sections)</summary>
+<ul>
+<li><a href="#-rôle">🎯 Rôle</a></li>
+<li><a href="#-créer-la-base-gratuite-sur-supabase">🆕 Créer la base gratuite sur Supabase</a></li>
+<li><a href="#-choisir-la-bonne-adresse-bouton-connect">🧭 Choisir la bonne adresse (bouton <strong>Connect</strong>)</a></li>
+<li><a href="#-brancher-le-site">🔌 Brancher le site</a></li>
+<li><a href="#-schéma">🗺️ Schéma</a></li>
+<li><a href="#-limites-de-loffre-gratuite-à-vérifier-sur-supabase">✅ Limites de l'offre gratuite (à vérifier sur Supabase)</a></li>
+<li><a href="#-sauvegarde-manuelle">💾 Sauvegarde manuelle</a></li>
+<li><a href="#-dépannage">🩺 Dépannage</a></li>
+</ul>
+</details>
+<h2 id="-rôle">🎯 Rôle</h2>
+<p>La base stocke les <strong>textes</strong> (articles, métadonnées, liste des médias). Les fichiers médias sont ailleurs (<a href="07-Medias.html">page 7</a>).</p>
+<p>Sans <code>DATABASE_URL</code>, le site utilise SQLite locale (développement). <strong>En production, utilise PostgreSQL</strong> : sur Render gratuit, un fichier SQLite serait effacé à chaque redéploiement.</p>
+<h2 id="-créer-la-base-gratuite-sur-supabase">🆕 Créer la base gratuite sur Supabase</h2>
+<ol>
+<li>supabase.com → <strong>New project</strong> : nom, <strong>mot de passe de base</strong> (note-le ; évite <code>@ : / ? # %</code> ou encode-les), région proche de Render.</li>
+<li>Attends la fin de la création.</li>
+</ol>
+<h2 id="-choisir-la-bonne-adresse-bouton-connect">🧭 Choisir la bonne adresse (bouton <strong>Connect</strong>)</h2>
+<div class="alert tip">
+<p class="alert-title">💡 Astuce</p>
+<p>Choisis toujours <strong>Session pooler (port 5432)</strong> : il passe en IPv4 et fonctionne avec Render.</p>
+</div>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+flowchart TD
+  Q{&quot;Quelle adresse Supabase ?&quot;}
+  Q --&gt; A[&quot;🔌 Direct connection&lt;br/&gt;IPv6&quot;] --&gt; A1([&quot;❌ Souvent injoignable depuis Render&quot;])
+  Q --&gt; B[&quot;♻️ Session pooler&lt;br/&gt;port 5432&quot;] --&gt; B1([&quot;✅ À utiliser&quot;])
+  Q --&gt; C[&quot;⚡ Transaction pooler&lt;br/&gt;port 6543&quot;] --&gt; C1([&quot;⚠️ À éviter ici&quot;])
+  class B1 ok
+  class A1 bad
+  classDef cloud fill:#0f2130,stroke:#5fd0ff,color:#e6eef5
+  classDef ok fill:#0c241b,stroke:#5dffb0,color:#e6eef5
+  classDef bad fill:#241219,stroke:#ff4d5e,color:#ffb4bb
+</pre>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Direct connection</td>
+<td>❌ souvent IPv6 seulement sur l'offre gratuite, inaccessible depuis Render</td>
+</tr>
+<tr>
+<td><strong>Session pooler (port 5432)</strong></td>
+<td>✅ <strong>à utiliser</strong> (IPv4)</td>
+</tr>
+<tr>
+<td>Transaction pooler (port 6543)</td>
+<td>⚠️ à éviter avec ce site</td>
+</tr>
+</tbody>
+</table>
+<p>Forme :</p>
+<pre><code>postgresql://postgres.&lt;ref&gt;:&lt;MOT_DE_PASSE&gt;@aws-0-&lt;region&gt;.pooler.supabase.com:5432/postgres
+</code></pre>
+<p>Remplace <code>[YOUR-PASSWORD]</code> par le mot de passe <strong>sans crochets</strong>. Le site convertit lui-même le préfixe pour le pilote <code>psycopg</code>.</p>
+<p>Caractères spéciaux à encoder : <code>@</code> → <code>%40</code>, <code>#</code> → <code>%23</code>, <code>/</code> → <code>%2F</code>, <code>:</code> → <code>%3A</code>.</p>
+<h2 id="-brancher-le-site">🔌 Brancher le site</h2>
+<ul>
+<li>Render → Environment → <code>DATABASE_URL=&lt;adresse&gt;</code>.</li>
+<li>Au démarrage, les tables <code>posts</code> et <code>media</code> sont créées si absentes, et 3 articles de démonstration sont ajoutés si <code>posts</code> est vide.</li>
+<li>Contrôle dans Supabase → <strong>Table Editor</strong>.</li>
+</ul>
+<h2 id="-schéma">🗺️ Schéma</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+erDiagram
+  POSTS {
+    int id PK
+    string slug UK
+    string title
+    string section
+    text excerpt
+    text content
+    string cover
+    string tags
+    bool published
+    bool pinned
+    string author
+    datetime created_at
+    datetime updated_at
+    datetime published_at
+  }
+  MEDIA {
+    int id PK
+    string key UK
+    string url
+    string kind
+    string mime
+    string name
+    int size
+    string uploaded_by
+    datetime created_at
+  }
+  POSTS }o..o{ MEDIA : &quot;référence par URL&quot;
+</pre>
+<p><strong>posts</strong> : <code>id</code> (PK), <code>slug</code> (unique, adresse <code>/a/&lt;slug&gt;</code>), <code>title</code>, <code>section</code> (clé : <code>dossiers-scp</code>…), <code>excerpt</code>, <code>content</code> (Markdown + shortcodes), <code>cover</code> (URL), <code>tags</code> (format <code>,tag1,tag2,</code>), <code>published</code>, <code>pinned</code>, <code>author</code>, <code>created_at</code>, <code>updated_at</code>, <code>published_at</code> (UTC).</p>
+<p><strong>media</strong> : <code>id</code>, <code>key</code> (unique), <code>url</code>, <code>kind</code> (<code>image</code>/<code>video</code>), <code>mime</code>, <code>name</code>, <code>size</code>, <code>uploaded_by</code>, <code>created_at</code>.</p>
+<h2 id="-limites-de-loffre-gratuite-à-vérifier-sur-supabase">✅ Limites de l'offre gratuite (à vérifier sur Supabase)</h2>
+<div class="alert warning">
+<p class="alert-title">⚠️ Attention</p>
+<p>Un projet Supabase gratuit <strong>inactif peut être mis en pause</strong> : le site renverra des erreurs tant qu'il n'est pas relancé depuis le tableau de bord.</p>
+</div>
+<ul>
+<li>Un projet inactif peut être <strong>mis en pause</strong> : le site renvoie des erreurs 500 tant qu'il n'est pas relancé depuis le tableau de bord.</li>
+<li>Stockage et connexions limités ; le site garde un petit pool (3 + 2 connexions par worker). Garde <code>--workers 1</code> ou 2.</li>
+</ul>
+<h2 id="-sauvegarde-manuelle">💾 Sauvegarde manuelle</h2>
+<p>Avec les outils PostgreSQL installés :</p>
+<pre><code class="language-powershell">pg_dump &quot;postgresql://postgres.&lt;ref&gt;:&lt;MDP&gt;@aws-0-&lt;region&gt;.pooler.supabase.com:5432/postgres&quot; -f sauvegarde.sql
+</code></pre>
+<p>Restauration : <code>psql "&lt;adresse&gt;" -f sauvegarde.sql</code>. Ne commit jamais ces fichiers. Vérifie dans ton tableau de bord quelles sauvegardes automatiques incluent ton offre.</p>
+<h2 id="-dépannage">🩺 Dépannage</h2>
+<table>
+<thead>
+<tr>
+<th>Symptôme</th>
+<th>Piste</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>could not translate host name</code> / timeout</td>
+<td>Mauvaise adresse ou mode Direct (IPv6) → Session pooler</td>
+</tr>
+<tr>
+<td><code>password authentication failed</code></td>
+<td>Mot de passe faux ou mal encodé → le réinitialiser dans Supabase (Settings → Database)</td>
+</tr>
+<tr>
+<td><code>too many connections</code> / <code>MaxClients…</code></td>
+<td>Réduire <code>--workers</code></td>
+</tr>
+<tr>
+<td>Erreurs après des jours sans visite</td>
+<td>Projet en pause → le relancer</td>
+</tr>
+<tr>
+<td>Tables absentes</td>
+<td>Le site n'a pas démarré : lire les Logs Render</td>
+</tr>
+</tbody>
+</table>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="05-Render.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="07-Medias.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+<p><sub>◀ <a href="05-Render.html">🚀 Déploiement Render</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="07-Medias.html">🎞️ Médias et stockage</a> ▶</sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

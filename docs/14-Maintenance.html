@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Maintenance — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link active" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/14-Maintenance.svg" alt="🔧 Maintenance" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-14_%2F_14-5dffb0?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-Interm%C3%A9diaire-ffb347?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-15_min-5fd0ff?style=flat-square" /></p>
+<p><a href="13-Depannage.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (11 sections)</summary>
+<ul>
+<li><a href="#-checklist-avant-ouverture-publique">🧰 Checklist avant ouverture publique</a></li>
+<li><a href="#-mettre-à-jour-le-code">♻️ Mettre à jour le code</a></li>
+<li><a href="#-mettre-à-jour-les-dépendances">♻️ Mettre à jour les dépendances</a></li>
+<li><a href="#-sauvegardes">💾 Sauvegardes</a></li>
+<li><a href="#-surveiller">👀 Surveiller</a></li>
+<li><a href="#-faire-évoluer-la-base">🧬 Faire évoluer la base</a></li>
+<li><a href="#-rotation-des-secrets">🔄 Rotation des secrets</a></li>
+<li><a href="#-changer-de-domaine">🌐 Changer de domaine</a></li>
+<li><a href="#-monter-en-charge">📈 Monter en charge</a></li>
+<li><a href="#-idées-dévolution">💡 Idées d'évolution</a></li>
+<li><a href="#-ressources-officielles">📖 Ressources officielles</a></li>
+</ul>
+</details>
+<h2 id="-checklist-avant-ouverture-publique">🧰 Checklist avant ouverture publique</h2>
+<div class="alert important">
+<p class="alert-title">📌 Important</p>
+<p>Fais cette checklist <strong>avant</strong> d'annoncer le site publiquement.</p>
+</div>
+<ul>
+<li>[ ] <code>FLASK_SECRET_KEY</code> définie, longue et stable</li>
+<li>[ ] <code>.env</code> absent du dépôt ; dépôt privé</li>
+<li>[ ] <code>DATABASE_URL</code> pointe vers Supabase (Session pooler)</li>
+<li>[ ] Médias sur R2/S3 (ou disque persistant)</li>
+<li>[ ] <code>SITE_URL</code>, <code>DISCORD_REDIRECT_URI</code> et Redirect Discord alignés sur le domaine final</li>
+<li>[ ] <code>ADMIN_DISCORD_IDS</code> limité aux éditeurs de confiance</li>
+<li>[ ] Articles de démonstration supprimés</li>
+<li>[ ] Mentions légales rédigées si nécessaire</li>
+<li>[ ] Sauvegarde de la base testée</li>
+</ul>
+<h2 id="-mettre-à-jour-le-code">♻️ Mettre à jour le code</h2>
+<pre><code class="language-powershell">git pull            # si tu travailles à plusieurs
+# modifications…
+git add . ; git commit -m &quot;...&quot; ; git push      # Render redéploie
+</code></pre>
+<p>Teste d'abord en local (<code>python app.py</code>).</p>
+<h2 id="-mettre-à-jour-les-dépendances">♻️ Mettre à jour les dépendances</h2>
+<pre><code class="language-powershell">pip list --outdated
+pip install -U &lt;paquet&gt;
+python app.py       # tester l'accueil, un article, la connexion, un envoi de média
+</code></pre>
+<p>Reporte les versions dans <code>requirements.txt</code> (les bornes <code>&lt;major</code> protègent des changements cassants). Mets aussi à jour <code>PYTHON_VERSION</code> de temps en temps.</p>
+<h2 id="-sauvegardes">💾 Sauvegardes</h2>
+<table>
+<thead>
+<tr>
+<th>Quoi</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Textes</td>
+<td><code>pg_dump</code> régulier (<a href="06-Base-de-donnees.html">page 6</a>) ; vérifie les sauvegardes incluses dans ton offre Supabase</td>
+</tr>
+<tr>
+<td>Médias</td>
+<td>Export du bucket R2/S3 (outil <code>rclone</code> ou <code>aws s3 sync</code>)</td>
+</tr>
+<tr>
+<td>Code</td>
+<td>GitHub</td>
+</tr>
+<tr>
+<td>Secrets</td>
+<td>Gestionnaire de mots de passe</td>
+</tr>
+</tbody>
+</table>
+<p>Teste une restauration au moins une fois.</p>
+<h2 id="-surveiller">👀 Surveiller</h2>
+<ul>
+<li><strong>Logs Render</strong> pour les erreurs.</li>
+<li>Un moniteur externe (UptimeRobot, etc.) sur <code>/healthz</code> te prévient d'une panne. Pinguer un service gratuit peut le garder éveillé, mais vérifie les règles et quotas de l'offre.</li>
+<li>Pense à vérifier que ton projet Supabase gratuit n'est pas en pause.</li>
+</ul>
+<h2 id="-faire-évoluer-la-base">🧬 Faire évoluer la base</h2>
+<p>Il n'y a pas d'outil de migration : <code>create_all</code> crée les tables absentes mais <strong>ne modifie pas</strong> les tables existantes.
+Pour ajouter une colonne, exécute le SQL à la main (Supabase → SQL Editor), par exemple :</p>
+<pre><code class="language-sql">ALTER TABLE posts ADD COLUMN views integer NOT NULL DEFAULT 0;
+</code></pre>
+<p>puis ajoute la colonne dans <code>app.py</code> (<code>Table("posts", …)</code>). Pour des évolutions fréquentes, adopte <strong>Alembic</strong>.</p>
+<h2 id="-rotation-des-secrets">🔄 Rotation des secrets</h2>
+<ul>
+<li><strong>Discord</strong> : Reset Secret → mettre à jour <code>DISCORD_CLIENT_SECRET</code>.</li>
+<li><strong>Supabase</strong> : changer le mot de passe → mettre à jour <code>DATABASE_URL</code>.</li>
+<li><strong><code>FLASK_SECRET_KEY</code></strong> : tout changement déconnecte les éditeurs (sans autre conséquence).</li>
+<li><strong>R2</strong> : créer un nouveau jeton, remplacer les clés, révoquer l'ancien.</li>
+</ul>
+<h2 id="-changer-de-domaine">🌐 Changer de domaine</h2>
+<p>Voir <a href="05-Render.html">Render → domaine</a> : DNS, <code>SITE_URL</code>, <code>DISCORD_REDIRECT_URI</code>, Redirect Discord. Si tu utilises R2 avec un domaine, vérifie aussi <code>S3_PUBLIC_URL</code>.</p>
+<h2 id="-monter-en-charge">📈 Monter en charge</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+flowchart LR
+  A[&quot;🆓 Gratuit&lt;br/&gt;Render Free + Supabase Free&quot;] --&gt; B[&quot;💳 Render payant&lt;br/&gt;plus de veille&quot;]
+  B --&gt; C[&quot;⚙️ 2 à 4 workers&quot;]
+  C --&gt; D[&quot;☁️ R2 ou S3 + Redis pour les limites&quot;]
+  D --&gt; E[&quot;🌍 CDN Cloudflare&quot;]
+  class A ok
+  classDef cloud fill:#0f2130,stroke:#5fd0ff,color:#e6eef5
+  classDef ok fill:#0c241b,stroke:#5dffb0,color:#e6eef5
+  classDef bad fill:#241219,stroke:#ff4d5e,color:#ffb4bb
+</pre>
+<ol>
+<li><strong>Plan Render payant</strong> : plus de ressources, pas de mise en veille.</li>
+<li><strong>Plus de workers/instances</strong> : <code>--workers 2-4</code> ; au-delà d'une instance, médias sur R2/S3 et <code>RATELIMIT_STORAGE_URI</code> (Redis).</li>
+<li><strong>Base</strong> : plan Supabase supérieur ; surveille les connexions (pool réglé dans <code>create_engine</code>).</li>
+<li><strong>CDN</strong> (Cloudflare) devant le site et le bucket pour absorber le trafic et les vidéos.</li>
+<li><strong>Cache</strong> des pages publiques si le trafic devient important.</li>
+</ol>
+<h2 id="-idées-dévolution">💡 Idées d'évolution</h2>
+<p>Commentaires modérés, mode clair/sombre, recherche plein texte PostgreSQL, rôles d'éditeurs et journal des modifications, planification de publication, statistiques de visites, newsletter à partir du RSS.</p>
+<h2 id="-ressources-officielles">📖 Ressources officielles</h2>
+<p>Documentation de Render, Supabase, Cloudflare R2, Discord Developers, Flask et SQLAlchemy : consulte-les pour les tarifs, limites et interfaces actuels, qui évoluent.</p>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="13-Depannage.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a></p>
+<p><sub>◀ <a href="13-Depannage.html">🩺 Dépannage / FAQ</a></sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Médias et stockage — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link active" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/07-Medias.svg" alt="🎞️ Médias et stockage" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-07_%2F_14-f6821f?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-Interm%C3%A9diaire-ffb347?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-20_min-5fd0ff?style=flat-square" /></p>
+<p><a href="06-Base-de-donnees.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="08-Rediger.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (7 sections)</summary>
+<ul>
+<li><a href="#-formats-acceptés">🧾 Formats acceptés</a></li>
+<li><a href="#-où-vont-les-fichiers-">📦 Où vont les fichiers ?</a></li>
+<li><a href="#-option-a--disque-persistant-render-payant">💳 Option A — Disque persistant Render (payant)</a></li>
+<li><a href="#-option-b--cloudflare-r2-recommandé-pour-durer">🅱️ Option B — Cloudflare R2 (recommandé pour durer)</a></li>
+<li><a href="#-changer-de-stockage-plus-tard">🔁 Changer de stockage plus tard</a></li>
+<li><a href="#-supprimer-un-média">🎞️ Supprimer un média</a></li>
+<li><a href="#-bonnes-pratiques">✅ Bonnes pratiques</a></li>
+</ul>
+</details>
+<h2 id="-formats-acceptés">🧾 Formats acceptés</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Formats</th>
+<th>Taille max (réglable)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Image</td>
+<td>PNG, JPG, GIF, WEBP</td>
+<td>12 Mo (<code>MAX_IMAGE_MB</code>)</td>
+</tr>
+<tr>
+<td>Vidéo</td>
+<td>MP4, WEBM</td>
+<td>80 Mo (<code>MAX_VIDEO_MB</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Le serveur lit la <strong>signature réelle</strong> du fichier : renommer un <code>.exe</code> en <code>.png</code> ne fonctionne pas. Le SVG est refusé volontairement (risque de script). Pour qu'une vidéo MP4 se lise dans tous les navigateurs, encode-la en <strong>H.264 + AAC</strong>.</p>
+<h2 id="-où-vont-les-fichiers-">📦 Où vont les fichiers ?</h2>
+<div class="alert warning">
+<p class="alert-title">⚠️ Attention</p>
+<p>Sur <strong>Render gratuit</strong>, le disque local est <strong>effacé à chaque redéploiement</strong> : les articles afficheraient des images cassées. Utilise R2/S3 (ou un disque Render payant).</p>
+</div>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+flowchart TD
+  A{&quot;Où stocker les médias ?&quot;}
+  A --&gt;|&quot;Render gratuit&quot;| B[&quot;❌ Disque local effacé&lt;br/&gt;à chaque déploiement&quot;]
+  A --&gt;|&quot;Render payant + disque&quot;| C[&quot;💾 DATA_DIR=/var/data&lt;br/&gt;une seule instance&quot;]
+  A --&gt;|&quot;Durable et évolutif&quot;| D[&quot;☁️ Cloudflare R2 ou S3&lt;br/&gt;variables S3_*&quot;]
+  B --&gt; D
+  class D ok
+  class B bad
+  classDef cloud fill:#0f2130,stroke:#5fd0ff,color:#e6eef5
+  classDef ok fill:#0c241b,stroke:#5dffb0,color:#e6eef5
+  classDef bad fill:#241219,stroke:#ff4d5e,color:#ffb4bb
+</pre>
+<p>Chaque fichier reçoit un nom aléatoire (<code>&lt;28 caractères hexadécimaux&gt;.png</code>), sans rapport avec le nom d'origine. Son adresse est enregistrée dans la table <code>media</code>, puis réutilisée dans les articles.</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Activation</th>
+<th>Adresse produite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Disque local</strong></td>
+<td>par défaut (<code>DATA_DIR/uploads</code>)</td>
+<td><code>/media/&lt;nom&gt;</code></td>
+</tr>
+<tr>
+<td><strong>S3 / Cloudflare R2</strong></td>
+<td>variable <code>S3_BUCKET</code> définie</td>
+<td><code>&lt;S3_PUBLIC_URL&gt;/&lt;nom&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>Sur Render gratuit, le disque local est effacé à chaque redéploiement</strong> : les articles afficheraient des images cassées. Utilise R2/S3 (ou un disque Render payant).</p>
+<h2 id="-option-a--disque-persistant-render-payant">💳 Option A — Disque persistant Render (payant)</h2>
+<ol>
+<li>Service → <strong>Disks</strong> → ajoute un disque monté sur <code>/var/data</code>.</li>
+<li>Variable <code>DATA_DIR=/var/data</code>.</li>
+<li>Limite : une seule instance du service.</li>
+</ol>
+<h2 id="-option-b--cloudflare-r2-recommandé-pour-durer">🅱️ Option B — Cloudflare R2 (recommandé pour durer)</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+sequenceDiagram
+  actor E as ✍️ Éditeur
+  participant W as 🌐 Site
+  participant X as 🔎 Contrôles
+  participant S as 📦 Stockage
+  participant B as 🗄️ Base
+  E-&gt;&gt;W: Dépose un fichier
+  W-&gt;&gt;X: Vérifie signature, taille et type
+  X--&gt;&gt;W: Accepté ou refusé
+  W-&gt;&gt;S: Enregistre sous un nom aléatoire
+  S--&gt;&gt;W: Adresse publique
+  W-&gt;&gt;B: Ajoute une ligne dans media
+  W--&gt;&gt;E: Adresse prête à insérer
+</pre>
+<p>Offre gratuite avec quota, qui peut demander un moyen de paiement à l'inscription : vérifie les conditions actuelles.</p>
+<ol>
+<li>Cloudflare → <strong>R2</strong> → <strong>Create bucket</strong> (ex. <code>scp-medias</code>).</li>
+<li><strong>Accès public</strong> du bucket : active le domaine <code>r2.dev</code> (pour tester) ou, mieux, connecte un <strong>domaine personnalisé</strong>. Note l'adresse publique obtenue.</li>
+<li><strong>Manage API tokens</strong> → crée un jeton avec droit <strong>Object Read &amp; Write</strong> sur ce bucket. Note l'<em>Access Key ID</em>, le <em>Secret</em> et l'<em>adresse S3</em> (<code>https://&lt;ACCOUNT_ID&gt;.r2.cloudflarestorage.com</code>).</li>
+<li>Dans le dépôt, <strong>décommente</strong> <code>boto3</code> dans <code>requirements.txt</code>, puis <code>git push</code>.</li>
+<li>Sur Render, ajoute :</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>S3_BUCKET</code></td>
+<td><code>scp-medias</code></td>
+</tr>
+<tr>
+<td><code>S3_ENDPOINT_URL</code></td>
+<td><code>https://&lt;ACCOUNT_ID&gt;.r2.cloudflarestorage.com</code></td>
+</tr>
+<tr>
+<td><code>S3_PUBLIC_URL</code></td>
+<td>adresse publique du bucket, sans <code>/</code> final</td>
+</tr>
+<tr>
+<td><code>S3_ACCESS_KEY_ID</code></td>
+<td>clé d'accès</td>
+</tr>
+<tr>
+<td><code>S3_SECRET_ACCESS_KEY</code></td>
+<td>secret</td>
+</tr>
+<tr>
+<td><code>S3_REGION</code></td>
+<td><code>auto</code></td>
+</tr>
+</tbody>
+</table>
+<ol start="6">
+<li>Redéploie, envoie une image dans l'éditeur : l'adresse affichée doit commencer par <code>S3_PUBLIC_URL</code>.</li>
+</ol>
+<p>Autres services compatibles S3 (Backblaze B2, AWS S3, Supabase Storage via son endpoint S3) : mêmes variables.</p>
+<h2 id="-changer-de-stockage-plus-tard">🔁 Changer de stockage plus tard</h2>
+<p>Les articles contiennent l'adresse <strong>complète</strong> des médias au moment de l'envoi. Si tu changes de stockage ou de domaine, les anciennes adresses ne sont <strong>pas</strong> réécrites : copie les fichiers vers le nouveau stockage en gardant les mêmes noms et la même adresse publique, ou corrige les articles.</p>
+<h2 id="-supprimer-un-média">🎞️ Supprimer un média</h2>
+<p>Bouton <strong>Supprimer</strong> dans la bibliothèque : supprime le fichier et la ligne en base. Les articles qui l'utilisent afficheront un lien cassé.</p>
+<h2 id="-bonnes-pratiques">✅ Bonnes pratiques</h2>
+<ul>
+<li>Compresse les images (≈ 1600 px de large suffisent) et préfère WEBP/JPG aux gros PNG.</li>
+<li>Pour les animations, une courte vidéo MP4 avec l'option <code>loop</code> est bien plus légère qu'un GIF.</li>
+<li>Les vidéos lourdes coûtent de la bande passante : mets un CDN devant ou héberge-les sur YouTube (<code>[[youtube: …]]</code>).</li>
+<li>Les envois très lourds peuvent atteindre les limites de requête de l'hébergeur ou d'un proxy (certains plafonnent à ≈ 100 Mo).</li>
+</ul>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="06-Base-de-donnees.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="08-Rediger.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+<p><sub>◀ <a href="06-Base-de-donnees.html">🗄️ Base de données</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="08-Rediger.html">✍️ Rédiger un article</a> ▶</sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

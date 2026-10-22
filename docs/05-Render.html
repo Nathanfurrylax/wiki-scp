@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Déploiement Render — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link active" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/05-Render.svg" alt="🚀 Déploiement Render" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-05_%2F_14-5dffb0?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-Interm%C3%A9diaire-ffb347?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-20_min-5fd0ff?style=flat-square" /></p>
+<p><a href="04-GitHub.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="06-Base-de-donnees.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (9 sections)</summary>
+<ul>
+<li><a href="#-créer-le-service-web">🆕 Créer le service web</a></li>
+<li><a href="#-variables-onglet-environment">🧩 Variables (onglet Environment)</a></li>
+<li><a href="#-blueprint-optionnel">📐 Blueprint (optionnel)</a></li>
+<li><a href="#-vérifier">✅ Vérifier</a></li>
+<li><a href="#-logs">📜 Logs</a></li>
+<li><a href="#-offre-gratuite--limites">⚠️ Offre gratuite : limites</a></li>
+<li><a href="#-passer-en-payant">💳 Passer en payant</a></li>
+<li><a href="#-nom-de-domaine-personnalisé">🌐 Nom de domaine personnalisé</a></li>
+<li><a href="#-déploiement-automatique-et-retour-arrière">🔁 Déploiement automatique et retour arrière</a></li>
+</ul>
+</details>
+<h2 id="-créer-le-service-web">🆕 Créer le service web</h2>
+<p>render.com → <strong>New → Web Service</strong> → connecte GitHub → choisis le dépôt.</p>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td><code>scp-foundation</code> (devient <code>https://&lt;name&gt;.onrender.com</code>, avec suffixe aléatoire si le nom est pris)</td>
+</tr>
+<tr>
+<td>Runtime</td>
+<td>Python 3</td>
+</tr>
+<tr>
+<td>Build Command</td>
+<td><code>pip install -r requirements.txt</code></td>
+</tr>
+<tr>
+<td>Start Command</td>
+<td><code>gunicorn app:app --workers 1 --threads 4 --timeout 180 --bind 0.0.0.0:$PORT</code></td>
+</tr>
+<tr>
+<td>Instance Type</td>
+<td>Free (test) ou payant</td>
+</tr>
+<tr>
+<td>Health Check Path</td>
+<td><code>/healthz</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="-variables-onglet-environment">🧩 Variables (onglet Environment)</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PYTHON_VERSION</code></td>
+<td><code>3.12.7</code></td>
+</tr>
+<tr>
+<td><code>FLASK_SECRET_KEY</code></td>
+<td>longue valeur aléatoire</td>
+</tr>
+<tr>
+<td><code>DATABASE_URL</code></td>
+<td>adresse Supabase « Session pooler » (<a href="06-Base-de-donnees.html">page 6</a>)</td>
+</tr>
+<tr>
+<td><code>DISCORD_CLIENT_ID</code> / <code>DISCORD_CLIENT_SECRET</code></td>
+<td>depuis le portail Discord</td>
+</tr>
+<tr>
+<td><code>DISCORD_REDIRECT_URI</code></td>
+<td><code>https://TON-ADRESSE/auth/callback</code></td>
+</tr>
+<tr>
+<td><code>ADMIN_DISCORD_IDS</code></td>
+<td>tes ID séparés par des virgules</td>
+</tr>
+<tr>
+<td><code>SITE_URL</code></td>
+<td><code>https://TON-ADRESSE</code> (sans <code>/</code> final)</td>
+</tr>
+</tbody>
+</table>
+<p>Chaque enregistrement de variable redéploie le service.</p>
+<h2 id="-blueprint-optionnel">📐 Blueprint (optionnel)</h2>
+<div class="alert tip">
+<p class="alert-title">💡 Astuce</p>
+<p>Le fichier <code>render.yaml</code> fourni décrit déjà le service (variante <strong>gratuite</strong>). Il ne crée pas la base : colle l'adresse Supabase dans <code>DATABASE_URL</code>.</p>
+</div>
+<p><code>render.yaml</code> décrit le service (variante gratuite, base externe). <strong>New → Blueprint</strong> le lit ; les variables <code>sync: false</code> sont à saisir à la main.</p>
+<h2 id="-vérifier">✅ Vérifier</h2>
+<ul>
+<li>Statut <strong>Live</strong> sur le tableau de bord.</li>
+<li><code>https://TON-ADRESSE/healthz</code> affiche <code>ok</code>.</li>
+<li>« Accès éditeur » → Discord → Studio.</li>
+</ul>
+<h2 id="-logs">📜 Logs</h2>
+<p>Onglet <strong>Logs</strong> : erreurs Python, requêtes, connexion à la base. Erreurs typiques dans <a href="13-Depannage.html">Dépannage</a>.</p>
+<h2 id="-offre-gratuite--limites">⚠️ Offre gratuite : limites</h2>
+<div class="alert note">
+<p class="alert-title">ℹ️ Note</p>
+<p>Sur l'offre gratuite, <strong>aucune donnée locale n'est conservée</strong> et le site se met en veille. C'est pour cela que la base (Supabase) et les médias (R2/S3) sont externes.</p>
+</div>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+stateDiagram-v2
+  state &quot;Réveil (premier chargement lent)&quot; as Reveil
+  [*] --&gt; Actif
+  Actif --&gt; Veille : inactivité
+  Veille --&gt; Reveil : visite
+  Reveil --&gt; Actif : démarré
+</pre>
+<ul>
+<li>Mise en veille après inactivité ; <strong>premier chargement lent</strong> au réveil.</li>
+<li><strong>Pas de disque persistant</strong> : les fichiers locaux disparaissent à chaque redéploiement → base externe et <a href="07-Medias.html">médias externes</a> obligatoires.</li>
+<li>Ressources limitées : garde <code>--workers 1</code>.</li>
+</ul>
+<h2 id="-passer-en-payant">💳 Passer en payant</h2>
+<ul>
+<li>Plus de mise en veille, plus de ressources, disque persistant possible.</li>
+<li>Avec un <strong>disque</strong>, une seule instance ; pour plusieurs instances, utilise R2/S3.</li>
+</ul>
+<h2 id="-nom-de-domaine-personnalisé">🌐 Nom de domaine personnalisé</h2>
+<ol>
+<li>Service → <strong>Settings → Custom Domains</strong> → ajoute ton domaine.</li>
+<li>Crée l'enregistrement DNS demandé (CNAME/A) chez ton registrar ; Render émet le certificat HTTPS.</li>
+<li><strong>Mets à jour</strong> <code>SITE_URL</code>, <code>DISCORD_REDIRECT_URI</code> <strong>et</strong> le Redirect du portail Discord.</li>
+</ol>
+<h2 id="-déploiement-automatique-et-retour-arrière">🔁 Déploiement automatique et retour arrière</h2>
+<p>Chaque <code>git push</code> sur la branche suivie redéploie. Un déploiement raté laisse l'ancienne version en ligne. Pour revenir en arrière, redéploie une version précédente depuis l'historique des déploiements.</p>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="04-GitHub.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="06-Base-de-donnees.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+<p><sub>◀ <a href="04-GitHub.html">🐙 GitHub</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="06-Base-de-donnees.html">🗄️ Base de données</a> ▶</sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

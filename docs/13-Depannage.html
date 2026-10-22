@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Dépannage / FAQ — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link active" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/13-Depannage.svg" alt="🩺 Dépannage / FAQ" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-13_%2F_14-ffb347?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-Tous_niveaux-5fd0ff?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-au_besoin-5fd0ff?style=flat-square" /></p>
+<p><a href="12-Personnalisation.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="14-Maintenance.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (8 sections)</summary>
+<ul>
+<li><a href="#-connexion-discord">🔐 Connexion Discord</a></li>
+<li><a href="#-démarrage-local">💻 Démarrage local</a></li>
+<li><a href="#-render">☁️ Render</a></li>
+<li><a href="#-base-de-données">🍪 Base de données</a></li>
+<li><a href="#-médias">🎞️ Médias</a></li>
+<li><a href="#-affichage">🖥️ Affichage</a></li>
+<li><a href="#-git">🌿 Git</a></li>
+<li><a href="#-questions-fréquentes">❓ Questions fréquentes</a></li>
+</ul>
+</details>
+<h2 id="-connexion-discord">🔐 Connexion Discord</h2>
+<div class="alert tip">
+<p class="alert-title">💡 Astuce</p>
+<p>Avant tout : regarde les <strong>logs</strong> (terminal en local, onglet <em>Logs</em> sur Render). Le message exact indique presque toujours la cause.</p>
+</div>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+flowchart TD
+  S([&quot;🩺 La connexion échoue&quot;]) --&gt; Q{&quot;Quel symptôme ?&quot;}
+  Q --&gt;|&quot;redirect_uri invalide&quot;| A1[&quot;📍 Redirect Discord différent de DISCORD_REDIRECT_URI&quot;]
+  Q --&gt;|&quot;échec + 401 dans les logs&quot;| A2[&quot;🔑 Client ID ou Secret faux ou vide&quot;]
+  Q --&gt;|&quot;État OAuth invalide&quot;| A3[&quot;🍪 Mauvaise adresse ou cookie perdu&quot;]
+  Q --&gt;|&quot;Accès non autorisé&quot;| A4[&quot;🪪 ID absent de ADMIN_DISCORD_IDS&quot;]
+  class A1,A2,A3,A4 cloud
+  classDef cloud fill:#0f2130,stroke:#5fd0ff,color:#e6eef5
+  classDef ok fill:#0c241b,stroke:#5dffb0,color:#e6eef5
+  classDef bad fill:#241219,stroke:#ff4d5e,color:#ffb4bb
+</pre>
+<table>
+<thead>
+<tr>
+<th>Symptôme</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Invalid OAuth2 redirect_uri</code></td>
+<td>Redirect Discord ≠ <code>DISCORD_REDIRECT_URI</code></td>
+<td>Identiques au caractère près (<code>http</code>/<code>https</code>, <code>/</code> final, <code>localhost</code>/<code>127.0.0.1</code>)</td>
+</tr>
+<tr>
+<td>Logs : <code>401 … /oauth2/token</code>, <code>invalid_client</code></td>
+<td>Client ID/Secret faux ou vide</td>
+<td>Reset Secret ; vérifier le nom <code>DISCORD_CLIENT_SECRET</code></td>
+</tr>
+<tr>
+<td><code>400 État OAuth invalide</code></td>
+<td>Cookie de session perdu</td>
+<td>Utiliser l'adresse exacte du redirect ; recommencer depuis « Accès éditeur »</td>
+</tr>
+<tr>
+<td>« Accès non autorisé »</td>
+<td>ID absent de la liste</td>
+<td>Corriger <code>ADMIN_DISCORD_IDS</code> (virgules, sans espaces ni guillemets)</td>
+</tr>
+<tr>
+<td>« Connexion Discord non configurée »</td>
+<td><code>DISCORD_CLIENT_ID</code> vide</td>
+<td>Renseigner la variable, redémarrer</td>
+</tr>
+<tr>
+<td>Déconnecté tout le temps</td>
+<td><code>FLASK_SECRET_KEY</code> changeante ou absente en local</td>
+<td>Définir une clé fixe</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-démarrage-local">💻 Démarrage local</h2>
+<table>
+<thead>
+<tr>
+<th>Symptôme</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'SECTIONS' is undefined</code></td>
+<td>Importer les macros avec contexte : <code>{% from "_macros.html" import card with context %}</code> (déjà corrigé dans la dernière version)</td>
+</tr>
+<tr>
+<td><code>.env</code> sans effet</td>
+<td>Fichier mal nommé (<code>.env.txt</code>) ou serveur non relancé</td>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError</code></td>
+<td><code>pip install -r requirements.txt</code> dans l'environnement virtuel activé</td>
+</tr>
+<tr>
+<td>PowerShell bloque l'activation</td>
+<td><code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code></td>
+</tr>
+<tr>
+<td>Port déjà utilisé</td>
+<td>Ferme l'autre instance ou définis <code>PORT=5001</code> (et adapte le redirect Discord)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-render">☁️ Render</h2>
+<table>
+<thead>
+<tr>
+<th>Symptôme</th>
+<th>Cause / solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build échoue : module introuvable</td>
+<td>Dépendance absente de <code>requirements.txt</code></td>
+</tr>
+<tr>
+<td><code>RuntimeError: FLASK_SECRET_KEY doit être défini</code></td>
+<td>Ajouter la variable dans Environment</td>
+</tr>
+<tr>
+<td>« No open ports detected »</td>
+<td>La commande de démarrage doit contenir <code>--bind 0.0.0.0:$PORT</code></td>
+</tr>
+<tr>
+<td><code>/healthz</code> ne répond pas</td>
+<td>Voir les Logs ; vérifier <code>DATABASE_URL</code></td>
+</tr>
+<tr>
+<td>Site très lent au premier accès</td>
+<td>Mise en veille de l'offre gratuite</td>
+</tr>
+<tr>
+<td>Retour sur le site déconnecté après Discord</td>
+<td><code>DISCORD_REDIRECT_URI</code>/<code>SITE_URL</code> en <code>http</code> ou avec un autre domaine</td>
+</tr>
+<tr>
+<td>Articles disparus après un déploiement</td>
+<td>Base SQLite locale utilisée : définir <code>DATABASE_URL</code></td>
+</tr>
+<tr>
+<td>Images disparues après un déploiement</td>
+<td>Disque local temporaire : utiliser R2/S3 ou un disque</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-base-de-données">🍪 Base de données</h2>
+<p>Voir le tableau de la <a href="06-Base-de-donnees.html">page 6</a> : adresse en Session pooler, mot de passe encodé, projet Supabase en pause, trop de connexions.
+Erreur <code>Can't load plugin: sqlalchemy.dialects:postgresql.psycopg</code> → <code>psycopg[binary]</code> manquant dans <code>requirements.txt</code>.</p>
+<h2 id="-médias">🎞️ Médias</h2>
+<table>
+<thead>
+<tr>
+<th>Symptôme</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« format non pris en charge »</td>
+<td>Seuls PNG, JPG, GIF, WEBP, MP4, WEBM ; le contenu réel est vérifié</td>
+</tr>
+<tr>
+<td>« fichier trop volumineux » / erreur 413</td>
+<td>Réduire le fichier ou augmenter <code>MAX_*_MB</code> (attention aux limites de l'hébergeur)</td>
+</tr>
+<tr>
+<td>Vidéo noire / non lisible</td>
+<td>Ré-encoder en H.264 + AAC</td>
+</tr>
+<tr>
+<td>Image externe absente</td>
+<td>Elle doit être en <strong>https</strong></td>
+</tr>
+<tr>
+<td>Média non affiché en S3/R2</td>
+<td>Bucket non public, <code>S3_PUBLIC_URL</code> faux, ou adresse avec <code>/</code> final</td>
+</tr>
+<tr>
+<td>Shortcode affiché en texte</td>
+<td>Il doit être <strong>seul sur sa ligne</strong> et commencer par <code>[[media:</code>, <code>[[gallery:</code> ou <code>[[youtube:</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="-affichage">🖥️ Affichage</h2>
+<table>
+<thead>
+<tr>
+<th>Symptôme</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Un script ou widget ajouté ne marche pas</td>
+<td>La CSP bloque les scripts en ligne et les domaines non autorisés (voir <a href="12-Personnalisation.html">Personnalisation</a>)</td>
+</tr>
+<tr>
+<td>RSS/sitemap avec la mauvaise adresse</td>
+<td>Définir <code>SITE_URL</code></td>
+</tr>
+<tr>
+<td>Animations absentes</td>
+<td>Réglage « réduire les animations » du système, ou JavaScript bloqué</td>
+</tr>
+<tr>
+<td>Texte qui ne s'habille pas autour du média</td>
+<td>Utiliser <code>align=left</code> ou <code>right</code> ; sur mobile le média passe en pleine largeur</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-git">🌿 Git</h2>
+<table>
+<thead>
+<tr>
+<th>Symptôme</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>push</code> refusé (non-fast-forward)</td>
+<td><code>git pull --rebase</code> puis <code>git push</code></td>
+</tr>
+<tr>
+<td><code>.env</code> apparaît dans <code>git status</code></td>
+<td>Vérifier <code>.gitignore</code> ; si déjà commité : <code>git rm --cached .env</code>, <strong>puis reset des secrets</strong></td>
+</tr>
+<tr>
+<td>Demande de mot de passe refusée</td>
+<td>Utiliser un Personal Access Token</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-questions-fréquentes">❓ Questions fréquentes</h2>
+<p><strong>Faut-il un bot Discord ?</strong> Non, seulement une application OAuth2.
+<strong>Plusieurs éditeurs ?</strong> Oui : ajoute leurs ID, séparés par des virgules.
+<strong>Les articles de démonstration ?</strong> Créés au premier démarrage d'une base vide ; supprime-les depuis le Studio.
+<strong>Puis-je héberger ailleurs que Render ?</strong> Oui : tout hébergeur Python (commande <code>gunicorn app:app</code>, variables d'environnement identiques).
+<strong>Pourquoi pas GitHub Pages ?</strong> Il ne sert que des fichiers statiques ; le site a besoin d'un serveur Python.</p>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="12-Personnalisation.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="14-Maintenance.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+<p><sub>◀ <a href="12-Personnalisation.html">🎨 Personnalisation</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="14-Maintenance.html">🔧 Maintenance</a> ▶</sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

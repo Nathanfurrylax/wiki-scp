@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>GitHub — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link active" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/04-GitHub.svg" alt="🐙 GitHub" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-04_%2F_14-9aa7b4?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-D%C3%A9butant-5dffb0?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-10_min-5fd0ff?style=flat-square" /></p>
+<p><a href="03-Discord-OAuth.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="05-Render.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (7 sections)</summary>
+<ul>
+<li><a href="#-avant-le-premier-envoi">🧰 Avant le premier envoi</a></li>
+<li><a href="#-créer-le-dépôt">🆕 Créer le dépôt</a></li>
+<li><a href="#-premier-envoi">📤 Premier envoi</a></li>
+<li><a href="#-mettre-à-jour-le-site">♻️ Mettre à jour le site</a></li>
+<li><a href="#-si-un-secret-a-été-publié-par-erreur">🚨 Si un secret a été publié par erreur</a></li>
+<li><a href="#-bonnes-pratiques">✅ Bonnes pratiques</a></li>
+<li><a href="#-utiliser-github-comme-wiki-gratuit">📚 Utiliser GitHub comme wiki gratuit</a></li>
+</ul>
+</details>
+<p>GitHub <strong>stocke le code</strong> ; il n'héberge pas le site (GitHub Pages ne gère que le statique). C'est Render qui exécute le site à partir de ton dépôt.</p>
+<h2 id="-avant-le-premier-envoi">🧰 Avant le premier envoi</h2>
+<ul>
+<li>Vérifie que <code>.gitignore</code> contient <code>.env</code>, <code>.venv/</code>, <code>uploads/*</code>, <code>scp_site.db*</code>.</li>
+<li>Ne mets <strong>jamais</strong> de secret dans le code.</li>
+</ul>
+<h2 id="-créer-le-dépôt">🆕 Créer le dépôt</h2>
+<p>github.com → <strong>New repository</strong> → nom <code>scp-foundation</code>, <strong>Private</strong> recommandé, <strong>sans</strong> README ni .gitignore initiaux.</p>
+<h2 id="-premier-envoi">📤 Premier envoi</h2>
+<pre><code class="language-powershell">cd &quot;C:\chemin\vers\scp_public&quot;
+git init
+git add .
+git status          # .env et .venv NE DOIVENT PAS apparaître
+git commit -m &quot;Version publique&quot;
+git branch -M main
+git remote add origin https://github.com/TON-PSEUDO/scp-foundation.git
+git push -u origin main
+</code></pre>
+<p>Au premier <code>push</code>, une fenêtre d'authentification GitHub s'ouvre. En cas de refus, crée un <strong>Personal Access Token</strong> (Settings → Developer settings) et utilise-le comme mot de passe.</p>
+<h2 id="-mettre-à-jour-le-site">♻️ Mettre à jour le site</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+flowchart LR
+  A[&quot;💻 Ton PC&quot;] --&gt;|&quot;git push&quot;| B[&quot;🐙 GitHub&quot;]
+  B --&gt;|&quot;webhook&quot;| C[&quot;☁️ Render&quot;]
+  C --&gt; D[&quot;🔨 Build : pip install&quot;]
+  D --&gt; E{&quot;✅ /healthz répond ok ?&quot;}
+  E --&gt;|&quot;oui&quot;| F([&quot;🟢 Nouvelle version en ligne&quot;])
+  E --&gt;|&quot;non&quot;| G([&quot;🔴 Ancienne version conservée&quot;])
+  class F ok
+  class G bad
+  classDef cloud fill:#0f2130,stroke:#5fd0ff,color:#e6eef5
+  classDef ok fill:#0c241b,stroke:#5dffb0,color:#e6eef5
+  classDef bad fill:#241219,stroke:#ff4d5e,color:#ffb4bb
+</pre>
+<pre><code class="language-powershell">git add .
+git commit -m &quot;Description du changement&quot;
+git push
+</code></pre>
+<p>Si Render est en déploiement automatique, chaque <code>push</code> sur <code>main</code> redéploie le site.</p>
+<h2 id="-si-un-secret-a-été-publié-par-erreur">🚨 Si un secret a été publié par erreur</h2>
+<div class="alert caution">
+<p class="alert-title">🚨 Danger</p>
+<p>Un secret poussé sur GitHub doit être considéré comme <strong>compromis</strong>, même dans un dépôt privé : fais d'abord un <em>Reset</em>, nettoie ensuite.</p>
+</div>
+<ol>
+<li><strong>Reset</strong> immédiat du secret concerné (Discord, mot de passe Supabase, clés R2).</li>
+<li>Retire-le de l'historique si possible (<code>git filter-repo</code>) ou recrée le dépôt.</li>
+<li>Un secret poussé est <strong>compromis</strong>, même dans un dépôt privé.</li>
+</ol>
+<h2 id="-bonnes-pratiques">✅ Bonnes pratiques</h2>
+<ul>
+<li>Messages de commit clairs, un changement logique par commit.</li>
+<li>Branche <code>dev</code> pour les essais, fusion dans <code>main</code> quand c'est stable.</li>
+<li>Ne versionne ni les médias ni la base.</li>
+</ul>
+<h2 id="-utiliser-github-comme-wiki-gratuit">📚 Utiliser GitHub comme wiki gratuit</h2>
+<ul>
+<li><strong>Option 1 (recommandée)</strong> : garder le dossier <code>docs/</code> dans le dépôt (liens relatifs <code>.md</code> prêts).</li>
+<li><strong>Option 2 — Wiki GitHub</strong> : le dossier <strong><code>wiki/</code></strong> est déjà prêt (liens sans <code>.md</code>, barre latérale <code>_Sidebar.md</code>, pied de page <code>_Footer.md</code>, images dans <code>assets/</code>).
+  1. Sur GitHub, onglet <strong>Wiki</strong> → crée une première page vide (cela initialise le wiki).
+  2. Clone-le : <code>git clone https://github.com/TON-PSEUDO/scp-foundation.wiki.git</code>
+  3. Copie <strong>tout le contenu</strong> du dossier <code>wiki/</code> dedans, puis <code>git add . ; git commit -m "Wiki" ; git push</code>.</li>
+</ul>
+<p>Les bannières et boutons animés sont des fichiers SVG : si une image ne s'affichait pas dans le wiki, passe par l'option 1 (dossier <code>docs/</code>), qui fonctionne partout.</p>
+<ul>
+<li><strong>Option 3 — GitHub Pages (vrai site web du wiki)</strong> : le dossier <code>docs/</code> contient déjà les pages <strong>HTML</strong> générées (thème sombre, menu latéral, diagrammes, encadrés).
+  1. <strong>Dépôt public requis</strong> sur l'offre gratuite de GitHub (Pages sur dépôt privé demande un plan payant : vérifie les conditions actuelles). Si tu veux garder le code privé, crée un petit dépôt <strong>public</strong> <code>scp-foundation-wiki</code> qui ne contient que le dossier <code>docs/</code>.
+  2. Envoie le dépôt (<code>git push</code>), puis : <strong>Settings → Pages → Build and deployment → Source : Deploy from a branch → Branch : <code>main</code> → dossier <code>/docs</code> → Save</strong>.
+  3. Après 1 à 2 minutes, le site est sur <code>https://TON-PSEUDO.github.io/scp-foundation/</code>.
+  4. Après chaque modification d'une page <code>.md</code> : <code>pip install Markdown</code> puis <code>python tools/build_site.py</code>, et commit des fichiers <code>.html</code> modifiés.</li>
+</ul>
+<p>Le fichier <code>docs/.nojekyll</code> désactive Jekyll (sinon GitHub réécrirait les pages). Les diagrammes sont dessinés par Mermaid chargé depuis le CDN jsDelivr, et les badges viennent de shields.io : une connexion internet est nécessaire pour les voir.</p>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="03-Discord-OAuth.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="05-Render.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+<p><sub>◀ <a href="03-Discord-OAuth.html">🔐 Connexion Discord</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="05-Render.html">🚀 Déploiement Render</a> ▶</sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>

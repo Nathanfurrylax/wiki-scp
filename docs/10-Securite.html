@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>Sécurité — SCP Foundation — Wiki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⛨</text></svg>">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div id="progress"></div>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<aside id="side"><a class="brand" href="index.html"><span>⛨</span><b>SCP Foundation</b><small>WIKI</small></a>
+<a class="nav-link" href="index.html">🏠 Sommaire</a>
+<h4>🧭 Démarrer</h4>
+<a class="nav-link" href="01-Installation-locale.html">💻 Installation locale</a>
+<a class="nav-link" href="02-Configuration.html">⚙️ Configuration</a>
+<a class="nav-link" href="03-Discord-OAuth.html">🔐 Connexion Discord</a>
+<h4>☁️ Mettre en ligne</h4>
+<a class="nav-link" href="04-GitHub.html">🐙 GitHub</a>
+<a class="nav-link" href="05-Render.html">🚀 Déploiement Render</a>
+<a class="nav-link" href="06-Base-de-donnees.html">🗄️ Base de données</a>
+<a class="nav-link" href="07-Medias.html">🎞️ Médias et stockage</a>
+<h4>✍️ Publier & gérer</h4>
+<a class="nav-link" href="08-Rediger.html">✍️ Rédiger un article</a>
+<a class="nav-link" href="09-Administration.html">🛠️ Administration</a>
+<a class="nav-link" href="12-Personnalisation.html">🎨 Personnalisation</a>
+<h4>🛡️ Fiabilité & évolution</h4>
+<a class="nav-link active" href="10-Securite.html">🛡️ Sécurité</a>
+<a class="nav-link" href="11-Architecture.html">🧬 Architecture</a>
+<a class="nav-link" href="13-Depannage.html">🩺 Dépannage / FAQ</a>
+<a class="nav-link" href="14-Maintenance.html">🔧 Maintenance</a></aside>
+<main><article class="doc"><div align="center">
+<p><img src="assets/banners/10-Securite.svg" alt="🛡️ Sécurité" width="100%"></p>
+<p><img alt="Page" src="https://img.shields.io/badge/Page-10_%2F_14-ff4d5e?style=flat-square" /> <img alt="Niveau" src="https://img.shields.io/badge/Niveau-Tous_niveaux-5fd0ff?style=flat-square" /> <img alt="Durée" src="https://img.shields.io/badge/Dur%C3%A9e-10_min-5fd0ff?style=flat-square" /></p>
+<p><a href="09-Administration.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="11-Architecture.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+</div>
+<details>
+<summary>📑 <b>Dans cette page</b> (5 sections)</summary>
+<ul>
+<li><a href="#-protections-intégrées">🔒 Protections intégrées</a></li>
+<li><a href="#-à-faire-de-ton-côté">📌 À faire de ton côté</a></li>
+<li><a href="#-limites-à-connaître">⚠️ Limites à connaître</a></li>
+<li><a href="#-données-personnelles-information-pas-un-avis-juridique">🍪 Données personnelles (information, pas un avis juridique)</a></li>
+<li><a href="#-signaler-une-faille">📣 Signaler une faille</a></li>
+</ul>
+</details>
+<h2 id="-protections-intégrées">🔒 Protections intégrées</h2>
+<pre class="mermaid">%%{init: {&quot;theme&quot;:&quot;base&quot;,&quot;themeVariables&quot;:{&quot;primaryColor&quot;:&quot;#0f2130&quot;,&quot;primaryTextColor&quot;:&quot;#e6eef5&quot;,&quot;primaryBorderColor&quot;:&quot;#5fd0ff&quot;,&quot;lineColor&quot;:&quot;#3d89ab&quot;,&quot;secondaryColor&quot;:&quot;#1a0d14&quot;,&quot;tertiaryColor&quot;:&quot;#0b1824&quot;,&quot;edgeLabelBackground&quot;:&quot;#0f2130&quot;,&quot;fontFamily&quot;:&quot;ui-monospace, Menlo, Consolas, monospace&quot;,&quot;noteBkgColor&quot;:&quot;#1a0d14&quot;,&quot;noteTextColor&quot;:&quot;#ffb4bb&quot;,&quot;actorBkg&quot;:&quot;#0f2130&quot;,&quot;actorBorder&quot;:&quot;#5fd0ff&quot;,&quot;actorTextColor&quot;:&quot;#e6eef5&quot;,&quot;signalColor&quot;:&quot;#3d89ab&quot;,&quot;signalTextColor&quot;:&quot;#3d89ab&quot;,&quot;labelBoxBkgColor&quot;:&quot;#0f2130&quot;,&quot;labelTextColor&quot;:&quot;#e6eef5&quot;,&quot;loopTextColor&quot;:&quot;#3d89ab&quot;}}}%%
+flowchart LR
+  R([&quot;🌍 Requête&quot;]) --&gt; H[&quot;🧱 En-têtes + CSP&quot;] --&gt; L[&quot;🚦 Limitation de requêtes&quot;] --&gt; C[&quot;🧾 Jeton CSRF&quot;] --&gt; A{&quot;🔐 ID dans la liste blanche ?&quot;}
+  A --&gt;|&quot;oui&quot;| OK([&quot;✅ Action autorisée&quot;])
+  A --&gt;|&quot;non&quot;| NO([&quot;⛔ Refus ou redirection&quot;])
+  class OK ok
+  class NO bad
+  classDef cloud fill:#0f2130,stroke:#5fd0ff,color:#e6eef5
+  classDef ok fill:#0c241b,stroke:#5dffb0,color:#e6eef5
+  classDef bad fill:#241219,stroke:#ff4d5e,color:#ffb4bb
+</pre>
+<table>
+<thead>
+<tr>
+<th>Protection</th>
+<th>Détail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Liste blanche d'éditeurs</strong></td>
+<td>ID Discord vérifié à <strong>chaque</strong> requête d'administration</td>
+</tr>
+<tr>
+<td><strong>OAuth2 avec <code>state</code></strong></td>
+<td>Anti-falsification de la connexion ; session renouvelée après connexion</td>
+</tr>
+<tr>
+<td><strong>CSRF</strong></td>
+<td>Jeton obligatoire sur tous les envois (formulaires et requêtes de l'éditeur)</td>
+</tr>
+<tr>
+<td><strong>Cookies de session</strong></td>
+<td><code>HttpOnly</code>, <code>SameSite=Lax</code>, <code>Secure</code> sur Render, durée 12 h</td>
+</tr>
+<tr>
+<td><strong>HTML assaini</strong></td>
+<td>Contenu passé par <code>bleach</code> : pas de script, style ni iframe arbitraire</td>
+</tr>
+<tr>
+<td><strong>Politique CSP stricte</strong></td>
+<td>Aucun script en ligne ; seuls les scripts du site ; iframes limitées à YouTube (nocookie)</td>
+</tr>
+<tr>
+<td><strong>En-têtes</strong></td>
+<td><code>X-Frame-Options: DENY</code>, <code>nosniff</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code>, HSTS sur Render</td>
+</tr>
+<tr>
+<td><strong>Envois de fichiers</strong></td>
+<td>Signature réelle vérifiée, types restreints, noms aléatoires, tailles plafonnées, SVG refusé</td>
+</tr>
+<tr>
+<td><strong>Limitation de requêtes</strong></td>
+<td>600/min par IP en général ; 20/min sur la connexion ; 60/min sur l'envoi de médias</td>
+</tr>
+<tr>
+<td><strong>Admin non indexée</strong></td>
+<td><code>noindex</code>, <code>no-store</code>, exclue par <code>robots.txt</code></td>
+</tr>
+<tr>
+<td><strong>Requêtes SQL paramétrées</strong></td>
+<td>SQLAlchemy ; recherche avec échappement des jokers</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-à-faire-de-ton-côté">📌 À faire de ton côté</h2>
+<div class="alert important">
+<p class="alert-title">📌 Important</p>
+<p>Active la <strong>double authentification</strong> sur chaque compte Discord éditeur et garde la liste <code>ADMIN_DISCORD_IDS</code> la plus courte possible.</p>
+</div>
+<ul>
+<li><strong>Secrets</strong> : jamais dans Git. En cas de fuite : Reset immédiat (Discord, Supabase, R2).</li>
+<li><strong>Dépôt GitHub privé</strong>.</li>
+<li><strong>Compte Discord des éditeurs</strong> : active la double authentification.</li>
+<li><strong>Liste d'ID minimale</strong> et revue régulière.</li>
+<li><strong>HTTPS</strong> uniquement (automatique sur Render).</li>
+<li><strong>Mises à jour</strong> des dépendances (<a href="14-Maintenance.html">page 14</a>).</li>
+</ul>
+<h2 id="-limites-à-connaître">⚠️ Limites à connaître</h2>
+<ul>
+<li>Tous les éditeurs sont <strong>équivalents</strong> (pas de rôles, pas de journal d'audit).</li>
+<li>La limitation de requêtes est comptée <strong>par worker</strong> (mémoire) ; pour un compteur partagé, configure <code>RATELIMIT_STORAGE_URI</code> (Redis).</li>
+<li>Les médias sont <strong>publics</strong> par adresse (adresses non devinables, mais non protégées).</li>
+<li>Un shortcode <code>[[media: https://…]]</code> peut charger une image hébergée ailleurs (le navigateur du visiteur contacte ce site tiers).</li>
+</ul>
+<h2 id="-données-personnelles-information-pas-un-avis-juridique">🍪 Données personnelles (information, pas un avis juridique)</h2>
+<ul>
+<li>Pour les visiteurs : aucun compte, aucun traceur ajouté ; polices chargées depuis Google Fonts.</li>
+<li>Pour les éditeurs : l'ID et le nom Discord sont conservés dans le <strong>cookie de session</strong> ; le <strong>nom</strong> de l'auteur est enregistré avec chaque document.</li>
+<li>Un site public en France peut nécessiter des <strong>mentions légales</strong> (éditeur/hébergeur) et une information sur les cookies strictement nécessaires : rédige-les selon ta situation.</li>
+</ul>
+<h2 id="-signaler-une-faille">📣 Signaler une faille</h2>
+<p>Ajoute un fichier <code>SECURITY.md</code> à ton dépôt indiquant un contact privé pour les signalements.</p>
+<div align="center">
+<p><img src="assets/divider.svg" alt="" width="100%"></p>
+<p><a href="09-Administration.html"><img src="assets/nav-prev.svg" alt="Précédent" height="44"></a> <a href="index.html"><img src="assets/nav-home.svg" alt="Sommaire" height="44"></a> <a href="11-Architecture.html"><img src="assets/nav-next.svg" alt="Suivant" height="44"></a></p>
+<p><sub>◀ <a href="09-Administration.html">🛠️ Administration</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="11-Architecture.html">🧬 Architecture</a> ▶</sub></p>
+<p><img src="assets/footer.svg" alt="SCP Foundation" width="100%"></p>
+<p><sub>⛨ <b>SCP Foundation</b> — projet de fan non officiel · contenus SCP sous licence CC BY-SA 3.0 lorsque applicable · <a href="#">⬆ retour en haut</a></sub></p>
+</div></article></main>
+<script src="assets/site.js"></script>
+</body></html>
