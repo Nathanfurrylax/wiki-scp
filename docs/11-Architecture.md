@@ -74,6 +74,15 @@ scp_public/
 ## 🧱 Technologies
 Flask 3 · SQLAlchemy 2 (Core) · psycopg 3 / SQLite · Flask-Limiter · Markdown + bleach · requests (Discord) · Gunicorn (production) · boto3 (optionnel, S3/R2).
 
+![FLASK](https://img.shields.io/badge/FLASK-3%20%7C%20Limiter-3BABC3?style=for-the-badge&logo=Flask)
+![SQLAlchemy 2](https://img.shields.io/badge/SQLAlchemy%202-Core-D71F00?style=for-the-badge&logo=SQLAlchemy)
+![sqlite](https://img.shields.io/badge/sqlite-psycopg%203-003B57?style=for-the-badge&logo=SQLITE)
+![Markdown](https://img.shields.io/badge/Markdown-%2B%20bleach-000000?style=for-the-badge&logo=MARKDOWN)
+![Discord](https://img.shields.io/badge/Discord-REQUESTS-5865F2?style=for-the-badge&logo=DISCORD)
+![Gunicorn](https://img.shields.io/badge/Gunicorn-production-499848?style=for-the-badge&logo=Gunicorn)
+![BOTO3](https://img.shields.io/badge/BOTO3-S3%2FR2%20(%20Optionnel)-F38020?style=for-the-badge&logo=CLOUDFLARE)
+
+
 ## 🛣️ Routes publiques
 | Route | Rôle |
 |---|---|
